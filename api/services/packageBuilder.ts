@@ -1,8 +1,8 @@
 import JSZip from "jszip";
 
-import { fetchWordFromMerriam, downloadAudio } from "./merriamWebster";
+import { fetchWordFromMerriam, downloadAudio } from "./merriamWebster.js";
 
-import type { CachedWord } from "../../types/spellingBee";
+import type { CachedWord } from "../../types/spellingBee.js";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

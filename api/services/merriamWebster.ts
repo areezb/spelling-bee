@@ -1,4 +1,4 @@
-import type { CachedWord, Meaning } from "../../types/spellingBee";
+import type { CachedWord, Meaning } from "../../types/spellingBee.js";
 
 const BASE_URL =
   "https://www.dictionaryapi.com/api/v3/references/collegiate/json";

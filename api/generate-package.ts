@@ -1,4 +1,4 @@
-import { buildCompetitionPackage } from "./services/packageBuilder";
+import { buildCompetitionPackage } from "./services/packageBuilder.js";
 
 export default {
   async fetch(request: Request): Promise<Response> {

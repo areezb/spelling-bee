@@ -1,4 +1,4 @@
-import type { CachedWord } from "../types/spellingBee";
+import type { CachedWord } from "../types/spellingBee.js";
 
 interface CurrentWordPanelProps {
   currentWord: CachedWord | null;

@@ -2,12 +2,12 @@ import "./RunnerPage.css";
 
 import { useState } from "react";
 
-import CurrentWordPanel from "../components/CurrentWordPanel";
-import ControlPanel from "../components/ControlPanel";
-import WordInput from "../components/WordInput";
-import WordList from "../components/WordList";
+import CurrentWordPanel from "../components/CurrentWordPanel.js";
+import ControlPanel from "../components/ControlPanel.js";
+import WordInput from "../components/WordInput.js";
+import WordList from "../components/WordList.js";
 
-import type { CachedWord, CompetitionWord } from "../types/spellingBee";
+import type { CachedWord, CompetitionWord } from "../types/spellingBee.js";
 
 export default function RunnerPage() {
   const [wordInput, setWordInput] = useState("");
