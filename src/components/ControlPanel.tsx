@@ -2,30 +2,24 @@ import { useRef } from "react";
 import type { ChangeEvent } from "react";
 
 interface ControlPanelProps {
-  canLoadWords: boolean;
   randomWordEnabled: boolean;
   currentWordActive: boolean;
 
   onUploadPackage(file: File): void;
-  onLoadWords(): void;
 
   onRandomWord(): void;
   onCorrect(): void;
-  onIncorrect(): void;
   onEndRound(): void;
 }
 
 export default function ControlPanel({
-  canLoadWords,
   randomWordEnabled,
   currentWordActive,
 
   onUploadPackage,
-  onLoadWords,
 
   onRandomWord,
   onCorrect,
-  onIncorrect,
   onEndRound,
 }: ControlPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -45,7 +39,7 @@ export default function ControlPanel({
 
     onUploadPackage(file);
 
-    // Allow the user to pick the same file again later.
+    // Allow selecting the same file again later.
     event.target.value = "";
   }
 
@@ -53,7 +47,7 @@ export default function ControlPanel({
     <div className="control-panel">
       <h2>Controls</h2>
 
-      <h3>Competition Package</h3>
+      <h3>Package</h3>
 
       <button onClick={handleUploadClick}>
         Load Package
@@ -66,17 +60,6 @@ export default function ControlPanel({
         onChange={handleFileChange}
         style={{ display: "none" }}
       />
-
-      <hr />
-
-      <h3>Manual Words</h3>
-
-      <button
-        onClick={onLoadWords}
-        disabled={!canLoadWords}
-      >
-        Load Words
-      </button>
 
       <hr />
 
@@ -100,19 +83,9 @@ export default function ControlPanel({
       </button>
 
       <button
-        onClick={onIncorrect}
-        disabled={!currentWordActive}
-        style={{ marginLeft: "0.5rem" }}
-      >
-        Incorrect
-      </button>
-
-      <br />
-      <br />
-
-      <button
         onClick={onEndRound}
         disabled={!currentWordActive}
+        style={{ marginLeft: "0.5rem" }}
       >
         End Round
       </button>

@@ -6,7 +6,6 @@ import JSZip from "jszip";
 
 import CurrentWordPanel from "../components/CurrentWordPanel.js";
 import ControlPanel from "../components/ControlPanel.js";
-import WordInput from "../components/WordInput.js";
 import WordList from "../components/WordList.js";
 
 import type {
@@ -15,7 +14,6 @@ import type {
 } from "../types/spellingBee.js";
 
 export default function RunnerPage() {
-  const [wordInput, setWordInput] = useState("");
   const [words, setWords] = useState<CompetitionWord[]>([]);
 
   const currentWord =
@@ -25,26 +23,7 @@ export default function RunnerPage() {
     words.length > 0 && currentWord === null;
 
   // -----------------------------
-  // MANUAL WORD INPUT
-  // -----------------------------
-  function handleLoadWords() {
-    const loadedWords: CompetitionWord[] = wordInput
-      .split("\n")
-      .map((word) => word.trim())
-      .filter(Boolean)
-      .map((word) => ({
-        word,
-        meanings: [],
-        alternateSpellings: [],
-        used: false,
-        active: false,
-      }));
-
-    setWords(loadedWords);
-  }
-
-  // -----------------------------
-  // ZIP PACKAGE
+  // COMPETITION PACKAGE
   // -----------------------------
   async function handleUploadPackage(
     file: File,
@@ -70,9 +49,7 @@ export default function RunnerPage() {
 
     const loadedWords: CompetitionWord[] = [];
 
-    for (const cachedWord of Object.values(
-      packageData.words,
-    )) {
+    for (const cachedWord of Object.values(packageData.words)) {
       let audioUrl = cachedWord.audioUrl;
 
       if (!audioUrl && cachedWord.audioFile) {
@@ -143,10 +120,6 @@ export default function RunnerPage() {
     resolveCurrentWord(true);
   }
 
-  function handleIncorrect() {
-    resolveCurrentWord(false);
-  }
-
   function handleEndRound() {
     resolveCurrentWord(true);
   }
@@ -157,9 +130,6 @@ export default function RunnerPage() {
 
       <div className="middle-row">
         <ControlPanel
-          canLoadWords={
-            wordInput.trim().length > 0
-          }
           randomWordEnabled={canRandomize}
           currentWordActive={
             currentWord !== null
@@ -167,22 +137,15 @@ export default function RunnerPage() {
           onUploadPackage={
             handleUploadPackage
           }
-          onLoadWords={handleLoadWords}
           onRandomWord={
             handleRandomWord
           }
           onCorrect={handleCorrect}
-          onIncorrect={handleIncorrect}
           onEndRound={handleEndRound}
         />
 
         <WordList words={words} />
       </div>
-
-      <WordInput
-        value={wordInput}
-        onChange={setWordInput}
-      />
     </div>
   );
 }
