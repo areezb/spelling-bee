@@ -1,9 +1,0 @@
-.word-input {
-  margin-top: 2rem;
-}
-
-.word-input textarea {
-  width: 100%;
-  resize: vertical;
-  font-family: inherit;
-}

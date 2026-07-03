@@ -16,18 +16,14 @@ import type {
 export default function RunnerPage() {
   const [words, setWords] = useState<CompetitionWord[]>([]);
 
-  const currentWord =
-    words.find((word) => word.active) ?? null;
+  const currentWord = words.find((word) => word.active) ?? null;
 
-  const canRandomize =
-    words.length > 0 && currentWord === null;
+  const canRandomize = words.length > 0 && currentWord === null;
 
   // -----------------------------
   // COMPETITION PACKAGE
   // -----------------------------
-  async function handleUploadPackage(
-    file: File,
-  ) {
+  async function handleUploadPackage(file: File) {
     // Clean up any existing blob URLs.
     words.forEach((word) => {
       if (word.audioUrl?.startsWith("blob:")) {
@@ -44,8 +40,9 @@ export default function RunnerPage() {
       return;
     }
 
-    const packageData: CompetitionPackage =
-      JSON.parse(await jsonFile.async("string"));
+    const packageData: CompetitionPackage = JSON.parse(
+      await jsonFile.async("string"),
+    );
 
     const loadedWords: CompetitionWord[] = [];
 
@@ -53,9 +50,7 @@ export default function RunnerPage() {
       let audioUrl = cachedWord.audioUrl;
 
       if (!audioUrl && cachedWord.audioFile) {
-        const audioFile = zip.file(
-          `audio/${cachedWord.audioFile}`,
-        );
+        const audioFile = zip.file(`audio/${cachedWord.audioFile}`);
 
         if (audioFile) {
           const blob = await audioFile.async("blob");
@@ -78,9 +73,7 @@ export default function RunnerPage() {
   // COMPETITION
   // -----------------------------
   function handleRandomWord() {
-    const availableWords = words.filter(
-      (word) => !word.used,
-    );
+    const availableWords = words.filter((word) => !word.used);
 
     if (availableWords.length === 0) {
       alert("All words have been used.");
@@ -88,11 +81,7 @@ export default function RunnerPage() {
     }
 
     const selected =
-      availableWords[
-        Math.floor(
-          Math.random() * availableWords.length,
-        )
-      ];
+      availableWords[Math.floor(Math.random() * availableWords.length)];
 
     setWords((previousWords) =>
       previousWords.map((word) => ({
@@ -126,26 +115,18 @@ export default function RunnerPage() {
 
   return (
     <div className="runner-page">
+      <ControlPanel
+        randomWordEnabled={canRandomize}
+        currentWordActive={currentWord !== null}
+        onUploadPackage={handleUploadPackage}
+        onRandomWord={handleRandomWord}
+        onCorrect={handleCorrect}
+        onEndRound={handleEndRound}
+      />
+
       <CurrentWordPanel currentWord={currentWord} />
 
-      <div className="middle-row">
-        <ControlPanel
-          randomWordEnabled={canRandomize}
-          currentWordActive={
-            currentWord !== null
-          }
-          onUploadPackage={
-            handleUploadPackage
-          }
-          onRandomWord={
-            handleRandomWord
-          }
-          onCorrect={handleCorrect}
-          onEndRound={handleEndRound}
-        />
-
-        <WordList words={words} />
-      </div>
+      <WordList words={words} />
     </div>
   );
 }

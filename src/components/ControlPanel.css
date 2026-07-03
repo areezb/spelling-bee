@@ -1,10 +1,12 @@
 .control-panel {
+  width: 250px;
+  flex-shrink: 0;
+
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 1rem;
-}
 
-.control-panel button {
-  width: 100%;
-  margin-bottom: 0.5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  overflow-y: auto;
 }

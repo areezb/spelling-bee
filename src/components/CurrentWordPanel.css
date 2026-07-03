@@ -1,6 +1,12 @@
 .current-word-panel {
+  flex: 1 1 auto;
+  min-width: 0;
+
   border: 1px solid #ccc;
   border-radius: 8px;
+
   padding: 1rem;
-  min-height: 180px;
+  box-sizing: border-box;
+
+  overflow-y: auto;
 }

@@ -1,9 +1,25 @@
 .word-list {
+  width: 300px;
+  flex-shrink: 0;
+
   border: 1px solid #ccc;
   border-radius: 8px;
+
   padding: 1rem;
+  box-sizing: border-box;
+
+  overflow-y: auto;
+}
+
+.word-list {
+  display: flex;
+  flex-direction: column;
 }
 
 .word-list ul {
+  flex: 1;
+  overflow-y: auto;
+
   margin: 0;
+  padding-left: 1.25rem;
 }

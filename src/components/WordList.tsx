@@ -1,3 +1,5 @@
+import "./WordList.css"
+
 import type { CompetitionWord } from "../types/spellingBee.js";
 
 interface WordListProps {

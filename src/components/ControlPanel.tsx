@@ -1,3 +1,5 @@
+import "./ControlPanel.css"
+
 import { useRef } from "react";
 import type { ChangeEvent } from "react";
 
