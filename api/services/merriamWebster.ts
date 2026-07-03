@@ -1,4 +1,7 @@
-import type { CachedWord, Meaning } from "../../src/types/spellingBee.js";
+import type {
+  CachedWord,
+  Meaning,
+} from "../../src/types/spellingBee.js";
 
 const BASE_URL =
   "https://www.dictionaryapi.com/api/v3/references/collegiate/json";
@@ -43,7 +46,7 @@ function getAudioUrl(audio: string): string {
   } else if (/^[0-9]/.test(audio)) {
     subdirectory = "number";
   } else {
-    subdirectory = audio[0] as string;
+    subdirectory = audio[0];
   }
 
   return `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audio}.mp3`;
@@ -64,7 +67,7 @@ export async function fetchWordFromMerriam(
   const data = await response.json();
 
   if (!Array.isArray(data) || data.length === 0) {
-    throw new Error(`No entry found for "${word}"`);
+    throw new Error(`No entry found for "${word}".`);
   }
 
   if (typeof data[0] === "string") {
@@ -73,13 +76,32 @@ export async function fetchWordFromMerriam(
 
   const entries = data as MerriamWebsterEntry[];
 
-  const dictionaryEntries = entries.filter(
-    (entry) => entry.fl && entry.shortdef && entry.shortdef.length > 0,
-  );
+  const normalizedWord = word.toLowerCase();
 
-  const variantEntries = entries.filter(
-    (entry) => !dictionaryEntries.includes(entry),
-  );
+  const dictionaryEntries = entries.filter((entry) => {
+    const id = entry.meta.id
+      .split(":")[0]
+      .toLowerCase();
+
+    return (
+      id === normalizedWord &&
+      entry.fl &&
+      entry.shortdef &&
+      entry.shortdef.length > 0
+    );
+  });
+
+  if (dictionaryEntries.length === 0) {
+    throw new Error(`No usable entry found for "${word}".`);
+  }
+
+  const alternateSpellings = entries
+    .filter((entry) =>
+      entry.cxs?.some((cx) =>
+        cx.cxl.toLowerCase().includes("spelling of"),
+      ),
+    )
+    .map((entry) => entry.meta.id);
 
   const meanings: Meaning[] = dictionaryEntries.map((entry) => ({
     partOfSpeech: entry.fl!,
@@ -88,21 +110,14 @@ export async function fetchWordFromMerriam(
     })),
   }));
 
-  const alternateSpellings = variantEntries
-    .filter((entry) =>
-      entry.cxs?.some((cx) => cx.cxl.toLowerCase().includes("spelling of")),
-    )
-    .map((entry) => entry.meta.id);
+  const firstEntry = dictionaryEntries[0];
 
-  const first = dictionaryEntries[0];
+  const displayWord =
+    firstEntry.hwi?.hw?.replace(/\*/g, "") ??
+    firstEntry.meta.id;
 
-  if (!first) {
-    throw new Error(`No usable entry found for "${word}".`);
-  }
-  const wordname = first.meta.id
-  const displayWord = first.hwi?.hw?.replace(/\*/g, "") ?? wordname;
-
-  const audioId = first.hwi?.prs?.[0]?.sound?.audio;
+  const audioId =
+    firstEntry.hwi?.prs?.[0]?.sound?.audio;
 
   return {
     word: displayWord,
@@ -117,7 +132,9 @@ export async function fetchWordFromMerriam(
   };
 }
 
-export async function downloadAudio(audioUrl: string): Promise<Buffer> {
+export async function downloadAudio(
+  audioUrl: string,
+): Promise<Buffer> {
   const response = await fetch(audioUrl);
 
   if (!response.ok) {
