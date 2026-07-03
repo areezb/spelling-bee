@@ -27,6 +27,5 @@ export interface CompetitionWord extends CachedWord {
 }
 
 export interface CompetitionPackage {
-  version: number;
   words: Record<string, CachedWord>;
 }

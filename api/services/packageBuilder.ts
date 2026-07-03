@@ -72,7 +72,6 @@ export async function buildCompetitionPackage(
   }
 
   const competitionPackage: CompetitionPackage = {
-    version: 1,
     words: cache,
   };
 
