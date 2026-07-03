@@ -1,4 +1,4 @@
-import type { CompetitionWord } from "../../shared/spellingBee";
+import type { CompetitionWord } from "../types/spellingBee";
 
 interface WordListProps {
   words: CompetitionWord[];
