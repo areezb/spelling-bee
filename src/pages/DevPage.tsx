@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const API_URL = "https://spelling-bee-api.vercel.app/api/generate-package";
+const API_URL = "/api/generate-package";
 
 export default function DevPage() {
   const [apiKey, setApiKey] = useState("");
