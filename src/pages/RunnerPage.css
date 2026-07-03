@@ -1,0 +1,16 @@
+.runner-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.middle-row {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+  align-items: flex-start;
+}
+
+.middle-row > * {
+  flex: 1;
+}
