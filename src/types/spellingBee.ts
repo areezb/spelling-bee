@@ -1,6 +1,5 @@
 export interface Definition {
   definition: string;
-  example?: string;
 }
 
 export interface Meaning {
@@ -12,6 +11,8 @@ export interface CachedWord {
   word: string;
 
   meanings: Meaning[];
+
+  example?: string;
 
   alternateSpellings?: string[];
 

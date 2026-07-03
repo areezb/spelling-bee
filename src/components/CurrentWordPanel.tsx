@@ -25,14 +25,12 @@ export default function CurrentWordPanel({
           : null}
       </h2>
 
-      {/* AUDIO */}
       {currentWord.audioUrl && (
         <div style={{ marginBottom: "1rem" }}>
           <audio controls src={currentWord.audioUrl} />
         </div>
       )}
 
-      {/* DEFINITIONS */}
       {currentWord.meanings.map((meaning) => (
         <div key={meaning.partOfSpeech}>
           <h3>{meaning.partOfSpeech}</h3>
@@ -41,17 +39,19 @@ export default function CurrentWordPanel({
             {meaning.definitions.map((definition, index) => (
               <li key={index}>
                 {definition.definition}
-                {definition.example && (
-                  <>
-                    <br />
-                    <em>{definition.example}</em>
-                  </>
-                )}
               </li>
             ))}
           </ul>
         </div>
       ))}
+
+       {currentWord.example && (
+        <div style={{ marginBottom: "1rem" }}>
+          <strong>Example:</strong>
+          <br />
+          <em>{currentWord.example}</em>
+        </div>
+      )}
     </div>
   );
 }

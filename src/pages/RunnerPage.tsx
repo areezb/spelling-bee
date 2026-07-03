@@ -58,10 +58,10 @@ export default function RunnerPage() {
 
     const zip = await JSZip.loadAsync(file);
 
-    const jsonFile = zip.file("cache.json");
+    const jsonFile = zip.file("words.json");
 
     if (!jsonFile) {
-      alert("No cache.json found in package.");
+      alert("No words.json found in package.");
       return;
     }
 

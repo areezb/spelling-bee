@@ -37,11 +37,7 @@ export async function buildCompetitionPackage(
         await fetchExampleSentence(cachedWord.word);
 
       if (exampleSentence) {
-        cachedWord.meanings.forEach((meaning) => {
-          meaning.definitions.forEach((definition) => {
-            definition.example = exampleSentence;
-          });
-        });
+        cachedWord.example = exampleSentence;
       }
 
       cache[cachedWord.word] = cachedWord;
