@@ -2,7 +2,7 @@ import JSZip from "jszip";
 
 import { fetchWordFromMerriam, downloadAudio } from "./merriamWebster";
 
-import type { CachedWord } from "../types/spellingBee";
+import type { CachedWord } from "../../types/spellingBee";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
