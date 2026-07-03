@@ -5,7 +5,7 @@ import {
   fetchWordFromMerriam,
 } from "./merriamWebster.js";
 
-import { fetchExampleSentence } from "./exampleSentence.ts";
+import { fetchExampleSentence } from "./exampleSentence.js";
 
 import type {
   CachedWord,
