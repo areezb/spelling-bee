@@ -1,4 +1,4 @@
-import type { CachedWord, Meaning } from "../../types/spellingBee.js";
+import type { CachedWord, Meaning } from "../../src/types/spellingBee.js";
 
 const BASE_URL =
   "https://www.dictionaryapi.com/api/v3/references/collegiate/json";
@@ -9,17 +9,28 @@ interface MerriamWebsterEntry {
   };
 
   hwi?: {
+    hw?: string;
+
     prs?: {
       mw?: string;
+
       sound?: {
         audio: string;
       };
     }[];
   };
 
-  fl: string;
+  fl?: string;
 
-  shortdef: string[];
+  shortdef?: string[];
+
+  cxs?: {
+    cxl: string;
+
+    cxtis?: {
+      cxt: string;
+    }[];
+  }[];
 }
 
 function getAudioUrl(audio: string): string {
@@ -62,19 +73,39 @@ export async function fetchWordFromMerriam(
 
   const entries = data as MerriamWebsterEntry[];
 
-  const meanings: Meaning[] = entries.map((entry) => ({
-    partOfSpeech: entry.fl,
-    definitions: entry.shortdef.map((definition) => ({
+  const dictionaryEntries = entries.filter(
+    (entry) => entry.fl && entry.shortdef && entry.shortdef.length > 0,
+  );
+
+  const variantEntries = entries.filter(
+    (entry) => !dictionaryEntries.includes(entry),
+  );
+
+  const meanings: Meaning[] = dictionaryEntries.map((entry) => ({
+    partOfSpeech: entry.fl!,
+    definitions: entry.shortdef!.map((definition) => ({
       definition,
     })),
   }));
 
-  const first = entries[0] as MerriamWebsterEntry;
+  const alternateSpellings = variantEntries
+    .filter((entry) =>
+      entry.cxs?.some((cx) => cx.cxl.toLowerCase().includes("spelling of")),
+    )
+    .map((entry) => entry.meta.id);
+
+  const first = dictionaryEntries[0];
+
+  if (!first) {
+    throw new Error(`No usable entry found for "${word}".`);
+  }
+  const wordname = first.meta.id
+  const displayWord = first.hwi?.hw?.replace(/\*/g, "") ?? wordname;
 
   const audioId = first.hwi?.prs?.[0]?.sound?.audio;
 
   return {
-    word: first.meta.id,
+    word: displayWord,
 
     ...(audioId && {
       audioFile: `${audioId}.mp3`,
@@ -82,7 +113,7 @@ export async function fetchWordFromMerriam(
     }),
 
     meanings,
-    alternateSpellings: [],
+    alternateSpellings,
   };
 }
 

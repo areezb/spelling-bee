@@ -20,8 +20,7 @@ export interface CachedWord {
   audioUrl?: string;
 }
 
-export interface CompetitionWord {
-  word: string;
+export interface CompetitionWord extends CachedWord {
   used: boolean;
   active: boolean;
 }

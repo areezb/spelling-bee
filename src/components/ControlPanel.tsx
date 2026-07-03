@@ -1,9 +1,12 @@
+import { useRef } from "react";
+import type { ChangeEvent } from "react";
+
 interface ControlPanelProps {
   canLoadWords: boolean;
   randomWordEnabled: boolean;
   currentWordActive: boolean;
 
-  onUploadPackage(): void;
+  onUploadPackage(file: File): void;
   onLoadWords(): void;
 
   onRandomWord(): void;
@@ -25,15 +28,44 @@ export default function ControlPanel({
   onIncorrect,
   onEndRound,
 }: ControlPanelProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleUploadClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleFileChange(
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    onUploadPackage(file);
+
+    // Allow the user to pick the same file again later.
+    event.target.value = "";
+  }
+
   return (
     <div className="control-panel">
       <h2>Controls</h2>
 
       <h3>Competition Package</h3>
 
-      <button onClick={onUploadPackage}>
-        Upload Package
+      <button onClick={handleUploadClick}>
+        Load Package
       </button>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".zip"
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
 
       <hr />
 

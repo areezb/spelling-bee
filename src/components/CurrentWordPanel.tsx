@@ -1,7 +1,7 @@
-import type { CachedWord } from "../types/spellingBee.js";
+import type { CompetitionWord } from "../types/spellingBee.js";
 
 interface CurrentWordPanelProps {
-  currentWord: CachedWord | null;
+  currentWord: CompetitionWord | null;
 }
 
 export default function CurrentWordPanel({
@@ -20,11 +20,19 @@ export default function CurrentWordPanel({
       <h2>
         {currentWord.word}
 
-        {currentWord.alternateSpellings &&
-          currentWord.alternateSpellings.length > 0 &&
-          ` / ${currentWord.alternateSpellings.join(" / ")}`}
+        {currentWord.alternateSpellings?.length
+          ? ` / ${currentWord.alternateSpellings.join(" / ")}`
+          : null}
       </h2>
 
+      {/* AUDIO */}
+      {currentWord.audioUrl && (
+        <div style={{ marginBottom: "1rem" }}>
+          <audio controls src={currentWord.audioUrl} />
+        </div>
+      )}
+
+      {/* DEFINITIONS */}
       {currentWord.meanings.map((meaning) => (
         <div key={meaning.partOfSpeech}>
           <h3>{meaning.partOfSpeech}</h3>
@@ -33,7 +41,6 @@ export default function CurrentWordPanel({
             {meaning.definitions.map((definition, index) => (
               <li key={index}>
                 {definition.definition}
-
                 {definition.example && (
                   <>
                     <br />

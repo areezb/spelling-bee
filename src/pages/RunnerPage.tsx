@@ -2,60 +2,108 @@ import "./RunnerPage.css";
 
 import { useState } from "react";
 
+import JSZip from "jszip";
+
 import CurrentWordPanel from "../components/CurrentWordPanel.js";
 import ControlPanel from "../components/ControlPanel.js";
 import WordInput from "../components/WordInput.js";
 import WordList from "../components/WordList.js";
 
-import type { CachedWord, CompetitionWord } from "../types/spellingBee.js";
+import type {
+  CompetitionPackage,
+  CompetitionWord,
+} from "../types/spellingBee.js";
 
 export default function RunnerPage() {
   const [wordInput, setWordInput] = useState("");
+  const [words, setWords] = useState<CompetitionWord[]>([]);
 
-  const [loadedWords, setLoadedWords] = useState<CompetitionWord[]>([]);
+  const currentWord =
+    words.find((word) => word.active) ?? null;
 
-  const [currentWord, setCurrentWord] = useState<CachedWord | null>(null);
+  const canRandomize =
+    words.length > 0 && currentWord === null;
 
-  const [dictionaryCache, setDictionaryCache] = useState<
-    Record<string, CachedWord>
-  >({});
-
-  const [randomWordEnabled, setRandomWordEnabled] = useState(false);
-
-  function handleUploadPackage() {}
-
+  // -----------------------------
+  // MANUAL WORD INPUT
+  // -----------------------------
   function handleLoadWords() {
-    const words = wordInput
+    const loadedWords: CompetitionWord[] = wordInput
       .split("\n")
       .map((word) => word.trim())
-      .filter((word) => word.length > 0);
-
-    const cache: Record<string, CachedWord> = {};
-
-    for (const word of words) {
-      cache[word] = {
+      .filter(Boolean)
+      .map((word) => ({
         word,
         meanings: [],
         alternateSpellings: [],
-      };
-    }
-
-    setDictionaryCache(cache);
-
-    setLoadedWords(
-      words.map((word) => ({
-        word,
         used: false,
         active: false,
-      })),
-    );
+      }));
 
-    setCurrentWord(null);
-    setRandomWordEnabled(true);
+    setWords(loadedWords);
   }
 
+  // -----------------------------
+  // ZIP PACKAGE
+  // -----------------------------
+  async function handleUploadPackage(
+    file: File,
+  ) {
+    // Clean up any existing blob URLs.
+    words.forEach((word) => {
+      if (word.audioUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(word.audioUrl);
+      }
+    });
+
+    const zip = await JSZip.loadAsync(file);
+
+    const jsonFile = zip.file("cache.json");
+
+    if (!jsonFile) {
+      alert("No cache.json found in package.");
+      return;
+    }
+
+    const packageData: CompetitionPackage =
+      JSON.parse(await jsonFile.async("string"));
+
+    const loadedWords: CompetitionWord[] = [];
+
+    for (const cachedWord of Object.values(
+      packageData.words,
+    )) {
+      let audioUrl = cachedWord.audioUrl;
+
+      if (!audioUrl && cachedWord.audioFile) {
+        const audioFile = zip.file(
+          `audio/${cachedWord.audioFile}`,
+        );
+
+        if (audioFile) {
+          const blob = await audioFile.async("blob");
+          audioUrl = URL.createObjectURL(blob);
+        }
+      }
+
+      loadedWords.push({
+        ...cachedWord,
+        audioUrl,
+        used: false,
+        active: false,
+      });
+    }
+
+    setWords(loadedWords);
+  }
+
+  // -----------------------------
+  // COMPETITION
+  // -----------------------------
   function handleRandomWord() {
-    const availableWords = loadedWords.filter((word) => !word.used);
+    const availableWords = words.filter(
+      (word) => !word.used,
+    );
 
     if (availableWords.length === 0) {
       alert("All words have been used.");
@@ -63,49 +111,44 @@ export default function RunnerPage() {
     }
 
     const selected =
-      availableWords[Math.floor(Math.random() * availableWords.length)];
+      availableWords[
+        Math.floor(
+          Math.random() * availableWords.length,
+        )
+      ];
 
-    setLoadedWords((words) =>
-      words.map((word) => ({
+    setWords((previousWords) =>
+      previousWords.map((word) => ({
         ...word,
         active: word.word === selected.word,
       })),
     );
-
-    setCurrentWord(dictionaryCache[selected.word]);
-
-    setRandomWordEnabled(false);
   }
 
-  function finishCurrentWord(clearWord: boolean) {
-    setLoadedWords((words) =>
-      words.map((word) =>
+  function resolveCurrentWord(markUsed: boolean) {
+    setWords((previousWords) =>
+      previousWords.map((word) =>
         word.active
           ? {
               ...word,
-              active: clearWord ? false : word.active,
-              used: clearWord ? true : word.used,
+              active: false,
+              used: markUsed ? true : word.used,
             }
           : word,
       ),
     );
-
-    if (clearWord) {
-      setCurrentWord(null);
-      setRandomWordEnabled(true);
-    }
   }
 
   function handleCorrect() {
-    finishCurrentWord(true);
+    resolveCurrentWord(true);
   }
 
   function handleIncorrect() {
-    finishCurrentWord(false);
+    resolveCurrentWord(false);
   }
 
   function handleEndRound() {
-    finishCurrentWord(true);
+    resolveCurrentWord(true);
   }
 
   return (
@@ -114,21 +157,32 @@ export default function RunnerPage() {
 
       <div className="middle-row">
         <ControlPanel
-          canLoadWords={wordInput.trim().length > 0}
-          randomWordEnabled={randomWordEnabled}
-          currentWordActive={currentWord !== null}
-          onUploadPackage={handleUploadPackage}
+          canLoadWords={
+            wordInput.trim().length > 0
+          }
+          randomWordEnabled={canRandomize}
+          currentWordActive={
+            currentWord !== null
+          }
+          onUploadPackage={
+            handleUploadPackage
+          }
           onLoadWords={handleLoadWords}
-          onRandomWord={handleRandomWord}
+          onRandomWord={
+            handleRandomWord
+          }
           onCorrect={handleCorrect}
           onIncorrect={handleIncorrect}
           onEndRound={handleEndRound}
         />
 
-        <WordList words={loadedWords} />
+        <WordList words={words} />
       </div>
 
-      <WordInput value={wordInput} onChange={setWordInput} />
+      <WordInput
+        value={wordInput}
+        onChange={setWordInput}
+      />
     </div>
   );
 }

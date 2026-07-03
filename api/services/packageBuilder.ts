@@ -1,8 +1,16 @@
 import JSZip from "jszip";
 
-import { fetchWordFromMerriam, downloadAudio } from "./merriamWebster.js";
+import {
+  downloadAudio,
+  fetchWordFromMerriam,
+} from "./merriamWebster.js";
 
-import type { CachedWord } from "../../types/spellingBee.js";
+import { fetchExampleSentence } from "./exampleSentence.ts";
+
+import type {
+  CachedWord,
+  CompetitionPackage,
+} from "../../src/types/spellingBee.js";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,26 +28,66 @@ export async function buildCompetitionPackage(
     console.log(`Loading ${word}...`);
 
     try {
-      const cachedWord = await fetchWordFromMerriam(word, apiKey);
+      const cachedWord = await fetchWordFromMerriam(
+        word,
+        apiKey,
+      );
 
-      cache[word] = cachedWord;
+      const exampleSentence =
+        await fetchExampleSentence(cachedWord.word);
 
-      if (cachedWord.audioUrl && cachedWord.audioFile) {
-        const audio = await downloadAudio(cachedWord.audioUrl);
-
-        zip.file(`audio/${cachedWord.audioFile}`, audio);
+      if (exampleSentence) {
+        cachedWord.meanings.forEach((meaning) => {
+          meaning.definitions.forEach((definition) => {
+            definition.example = exampleSentence;
+          });
+        });
       }
+
+      cache[cachedWord.word] = cachedWord;
+
+      if (
+        cachedWord.audioUrl &&
+        cachedWord.audioFile
+      ) {
+        const audio = await downloadAudio(
+          cachedWord.audioUrl,
+        );
+
+        zip.file(
+          `audio/${cachedWord.audioFile}`,
+          audio,
+        );
+      }
+
       await sleep(50);
     } catch (error) {
-      console.error(`Failed to load ${word}`, error);
+      console.error(
+        `Failed to load ${word}`,
+        error,
+      );
     }
   }
 
   if (Object.keys(cache).length === 0) {
-    throw new Error("No valid words were found.");
+    throw new Error(
+      "No valid words were found.",
+    );
   }
 
-  zip.file("cache.json", JSON.stringify(cache, null, 2));
+  const competitionPackage: CompetitionPackage = {
+    version: 1,
+    words: cache,
+  };
+
+  zip.file(
+    "words.json",
+    JSON.stringify(
+      competitionPackage,
+      null,
+      2,
+    ),
+  );
 
   return await zip.generateAsync({
     type: "nodebuffer",
