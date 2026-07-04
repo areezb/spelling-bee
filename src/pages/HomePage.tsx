@@ -6,7 +6,7 @@ export default function HomePage() {
       <h1>Spelling Bee Toolkit</h1>
 
       <p className="subtitle">
-        A tool for creating, editing, and running spelling bees.
+        For creating, editing, and running spelling bees.
       </p>
 
       <div className="home-card">
