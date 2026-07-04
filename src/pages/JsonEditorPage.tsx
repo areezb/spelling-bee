@@ -43,16 +43,61 @@ export default function JsonEditorPage() {
     setSelectedWord(updatedWord.word);
   }
 
+  function handleAddWord() {
+    const baseName = "new-word";
+    let name = baseName;
+    let counter = 2;
+
+    while (words[name]) {
+      name = `${baseName}-${counter++}`;
+    }
+
+    const newWord: CachedWord = {
+      word: name,
+      meanings: [],
+      example: "",
+      alternateSpellings: [],
+    };
+
+    setWords((previous) => ({
+      ...previous,
+      [name]: newWord,
+    }));
+
+    setSelectedWord(name);
+  }
+
+  function handleDeleteWord(wordName: string) {
+    setWords((previous) => {
+      const next = { ...previous };
+
+      delete next[wordName];
+
+      if (selectedWord === wordName) {
+        const remaining = Object.keys(next).sort();
+
+        setSelectedWord(remaining[0] ?? null);
+      }
+
+      return next;
+    });
+  }
+
   return (
     <div className="editor-page">
       <EditorControlPanel words={words} onLoadWords={handleLoadWords} />
 
-      <JsonWordEditor word={currentWord} onChange={handleWordChange} />
+      <JsonWordEditor
+        word={currentWord}
+        onChange={handleWordChange}
+        onDelete={handleDeleteWord}
+      />
 
       <JsonWordList
         words={words}
         selectedWord={selectedWord}
         onSelectWord={setSelectedWord}
+        onAddWord={handleAddWord}
       />
     </div>
   );

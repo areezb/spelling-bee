@@ -6,12 +6,14 @@ interface JsonWordListProps {
   words: Record<string, CachedWord>;
   selectedWord: string | null;
   onSelectWord(word: string): void;
+  onAddWord(): void;
 }
 
 export default function JsonWordList({
   words,
   selectedWord,
   onSelectWord,
+  onAddWord,
 }: JsonWordListProps) {
   const wordNames = Object.keys(words).sort();
 
@@ -30,6 +32,7 @@ export default function JsonWordList({
           </li>
         ))}
       </ul>
+      <button onClick={onAddWord}>Add Word</button>
     </div>
   );
 }

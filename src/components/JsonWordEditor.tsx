@@ -8,11 +8,14 @@ interface JsonWordEditorProps {
   word: CachedWord | null;
 
   onChange(originalWord: string, updatedWord: CachedWord): void;
+
+  onDelete(word: string): void;
 }
 
 export default function JsonWordEditor({
   word,
   onChange,
+  onDelete,
 }: JsonWordEditorProps) {
   if (!word) {
     return (
@@ -165,6 +168,18 @@ export default function JsonWordEditor({
       ))}
 
       <button onClick={addMeaning}>Add Meaning</button>
+
+      <hr />
+
+      <button
+        onClick={() => {
+          if (confirm(`Delete "${currentWord.word}"?`)) {
+            onDelete(currentWord.word);
+          }
+        }}
+      >
+        Delete Word
+      </button>
     </div>
   );
 }
