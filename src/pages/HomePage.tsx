@@ -1,99 +1,105 @@
+import Navbar from "../components/Navbar.tsx";
 import "./HomePage.css";
 
 export default function HomePage() {
   return (
-    <div className="home-page">
-      <h1>Spelling Bee Toolkit</h1>
+    <>
+      <Navbar />
+      <div className="home-page">
+        <h1>Spelling Bee Toolkit</h1>
 
-      <p className="subtitle">
-        For creating, editing, and running spelling bees.
-      </p>
-
-      <div className="home-card">
-        <h2>📖 Before You Begin</h2>
-
-        <p>
-          To generate competition packages, you'll need a{" "}
-          <a
-            href="https://dictionaryapi.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Merriam-Webster Dictionary API key
-          </a>
-          .
+        <p className="subtitle">
+          For creating, editing, and running spelling bees.
         </p>
 
-        <ul>
-          <li>Create a Merriam-Webster developer account.</li>
-          <li>Request an API key.</li>
-          <li>
-            Make sure your key has access to the{" "}
-            <strong>Collegiate Dictionary API</strong>.
-          </li>
-        </ul>
+        <div className="home-card">
+          <h2>📖 Before You Begin</h2>
 
-        <p>
-          Once your API key is active, you can use Package Builder to generate
-          competition packages.
-        </p>
-      </div>
+          <p>
+            To generate competition packages, you'll need a{" "}
+            <a
+              href="https://dictionaryapi.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Merriam-Webster Dictionary API key
+            </a>
+            .
+          </p>
 
-      <div className="home-card">
-        <h2>🛠 Package Builder</h2>
+          <ul>
+            <li>Create a Merriam-Webster developer account.</li>
+            <li>Request an API key.</li>
+            <li>
+              Make sure your key has access to the{" "}
+              <strong>Collegiate Dictionary API</strong>.
+            </li>
+          </ul>
 
-        <p>Create a new competition package from a list of words.</p>
+          <p>
+            Once your API key is active, you can use Package Builder to generate
+            competition packages.
+          </p>
+        </div>
 
-        <ul>
-          <li>Enter your Merriam-Webster API key.</li>
-          <li>Copy in a list of words, one word per line.</li>
-          <li>Download a complete competition package.</li>
-          <li>The package will include definitions, parts of speech, pronunciation audio, and in most cases example sentences.</li>
-        </ul>
+        <div className="home-card">
+          <h2>🛠 Package Builder</h2>
 
-        <button onClick={() => (window.location.href = "/dev")}>
-          Open Package Builder
-        </button>
-      </div>
+          <p>Create a new competition package from a list of words.</p>
 
-      <div className="home-card">
-        <h2>✏️ Package Editor</h2>
+          <ul>
+            <li>Enter your Merriam-Webster API key.</li>
+            <li>Copy in a list of words, one word per line.</li>
+            <li>Download a complete competition package.</li>
+            <li>
+              The package will include definitions, parts of speech,
+              pronunciation audio, and in most cases example sentences.
+            </li>
+          </ul>
 
-        <p>Review and edit an existing competition package.</p>
+          <button onClick={() => (window.location.href = "/dev")}>
+            Open Package Builder
+          </button>
+        </div>
 
-        <ul>
-          <li>Edit definitions and examples.</li>
-          <li>Add and remove words.</li>
-          <li>Save the updated package.</li>
-        </ul>
+        <div className="home-card">
+          <h2>✏️ Package Editor</h2>
 
-        <button onClick={() => (window.location.href = "/editor")}>
-          Open Package Editor
-        </button>
-      </div>
+          <p>Review and edit an existing competition package.</p>
 
-      <div className="home-card">
-        <h2>🎤 Competition Runner</h2>
+          <ul>
+            <li>Edit definitions and examples.</li>
+            <li>Add and remove words.</li>
+            <li>Save the updated package.</li>
+          </ul>
 
-        <p>Load a competition package and run the spelling bee.</p>
+          <button onClick={() => (window.location.href = "/editor")}>
+            Open Package Editor
+          </button>
+        </div>
 
-        <ul>
-          <li>Randomly select unused words.</li>
-          <li>Play pronunciation audio.</li>
-          <li>View definitions and examples.</li>
-          <li>Track used words.</li>
-        </ul>
+        <div className="home-card">
+          <h2>🎤 Competition Runner</h2>
 
-        <button onClick={() => (window.location.href = "/run")}>
-          Open Competition Runner
-        </button>
-      </div>
+          <p>Load a competition package and run the spelling bee.</p>
 
-      <div className="workflow">
-        <h2>Workflow</h2>
+          <ul>
+            <li>Randomly select unused words.</li>
+            <li>Play pronunciation audio.</li>
+            <li>View definitions and examples.</li>
+            <li>Track used words.</li>
+          </ul>
 
-        <pre>
-          {`Word List
+          <button onClick={() => (window.location.href = "/run")}>
+            Open Competition Runner
+          </button>
+        </div>
+
+        <div className="workflow">
+          <h2>Workflow</h2>
+
+          <pre>
+            {`Word List
     ↓
 Package Builder
     ↓
@@ -104,10 +110,11 @@ Package Editor (optional)
 competition.zip
     ↓
 Competition Runner`}
-        </pre>
-      </div>
+          </pre>
+        </div>
 
-      <footer>Version 1.0</footer>
-    </div>
+        <footer>Version 1.0</footer>
+      </div>
+    </>
   );
 }

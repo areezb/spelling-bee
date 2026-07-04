@@ -8,36 +8,25 @@ import EditorControlPanel from "../components/JsonEditorControls.js";
 import JsonWordEditor from "../components/JsonWordEditor.js";
 import JsonWordList from "../components/JsonWordList.js";
 
-import type {
-  CachedWord,
-  CompetitionPackage,
-} from "../types/spellingBee.js";
+import type { CachedWord, CompetitionPackage } from "../types/spellingBee.js";
+import Navbar from "../components/Navbar.tsx";
 
 export default function JsonEditorPage() {
-  const fileInputRef =
-    useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [packageZip, setPackageZip] =
-    useState<JSZip | null>(null);
+  const [packageZip, setPackageZip] = useState<JSZip | null>(null);
 
-  const [words, setWords] = useState<
-    Record<string, CachedWord>
-  >({});
+  const [words, setWords] = useState<Record<string, CachedWord>>({});
 
-  const [selectedWord, setSelectedWord] =
-    useState<string | null>(null);
+  const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
   const [dirty, setDirty] = useState(false);
 
   const currentWord =
-    selectedWord == null
-      ? null
-      : words[selectedWord] ?? null;
+    selectedWord == null ? null : (words[selectedWord] ?? null);
 
   useEffect(() => {
-    function handleBeforeUnload(
-      event: BeforeUnloadEvent,
-    ) {
+    function handleBeforeUnload(event: BeforeUnloadEvent) {
       if (!dirty) {
         return;
       }
@@ -46,25 +35,16 @@ export default function JsonEditorPage() {
       event.returnValue = "";
     }
 
-    window.addEventListener(
-      "beforeunload",
-      handleBeforeUnload,
-    );
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () =>
-      window.removeEventListener(
-        "beforeunload",
-        handleBeforeUnload,
-      );
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [dirty]);
 
   function handleLoadClick() {
     fileInputRef.current?.click();
   }
 
-  async function handleFileChange(
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) {
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (!file) {
@@ -80,22 +60,15 @@ export default function JsonEditorPage() {
         throw new Error();
       }
 
-      const text = await jsonFile.async(
-        "string",
-      );
+      const text = await jsonFile.async("string");
 
-      const loadedPackage =
-        JSON.parse(
-          text,
-        ) as CompetitionPackage;
+      const loadedPackage = JSON.parse(text) as CompetitionPackage;
 
       setPackageZip(zip);
 
       setWords(loadedPackage.words);
 
-      const firstWord = Object.keys(
-        loadedPackage.words,
-      )[0];
+      const firstWord = Object.keys(loadedPackage.words)[0];
 
       setSelectedWord(firstWord ?? null);
 
@@ -123,16 +96,13 @@ export default function JsonEditorPage() {
       ),
     );
 
-    const blob =
-      await packageZip.generateAsync({
-        type: "blob",
-      });
+    const blob = await packageZip.generateAsync({
+      type: "blob",
+    });
 
-    const url =
-      URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
 
-    const link =
-      document.createElement("a");
+    const link = document.createElement("a");
 
     link.href = url;
     link.download = "competition.zip";
@@ -144,18 +114,10 @@ export default function JsonEditorPage() {
     setDirty(false);
   }
 
-  function handleWordChange(
-    originalWord: string,
-    updatedWord: CachedWord,
-  ) {
+  function handleWordChange(originalWord: string, updatedWord: CachedWord) {
     setWords((previous) => {
-      if (
-        originalWord !== updatedWord.word &&
-        previous[updatedWord.word]
-      ) {
-        alert(
-          "A word with that name already exists.",
-        );
+      if (originalWord !== updatedWord.word && previous[updatedWord.word]) {
+        alert("A word with that name already exists.");
         return previous;
       }
 
@@ -198,21 +160,16 @@ export default function JsonEditorPage() {
     setDirty(true);
   }
 
-  function handleDeleteWord(
-    wordName: string,
-  ) {
+  function handleDeleteWord(wordName: string) {
     setWords((previous) => {
       const next = { ...previous };
 
       delete next[wordName];
 
       if (selectedWord === wordName) {
-        const remaining =
-          Object.keys(next).sort();
+        const remaining = Object.keys(next).sort();
 
-        setSelectedWord(
-          remaining[0] ?? null,
-        );
+        setSelectedWord(remaining[0] ?? null);
       }
 
       return next;
@@ -222,33 +179,36 @@ export default function JsonEditorPage() {
   }
 
   return (
-    <div className="editor-page">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".zip"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
+    <>
+      <Navbar />
+      <div className="editor-page">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".zip"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
 
-      <EditorControlPanel
-        canDownload={packageZip !== null}
-        onLoad={handleLoadClick}
-        onDownload={handleDownload}
-      />
+        <EditorControlPanel
+          canDownload={packageZip !== null}
+          onLoad={handleLoadClick}
+          onDownload={handleDownload}
+        />
 
-      <JsonWordEditor
-        word={currentWord}
-        onChange={handleWordChange}
-        onDelete={handleDeleteWord}
-      />
+        <JsonWordEditor
+          word={currentWord}
+          onChange={handleWordChange}
+          onDelete={handleDeleteWord}
+        />
 
-      <JsonWordList
-        words={words}
-        selectedWord={selectedWord}
-        onSelectWord={setSelectedWord}
-        onAddWord={handleAddWord}
-      />
-    </div>
+        <JsonWordList
+          words={words}
+          selectedWord={selectedWord}
+          onSelectWord={setSelectedWord}
+          onAddWord={handleAddWord}
+        />
+      </div>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar.tsx";
 import "./DevPage.css";
 
 import { useState } from "react";
@@ -60,7 +61,7 @@ export default function DevPage() {
             "\n\nThese words were added as blank entries. Use the JSON Editor to complete them manually.",
         );
       } else {
-        alert("Package successfully generated.")
+        alert("Package successfully generated.");
       }
     } catch (error) {
       console.error(error);
@@ -74,37 +75,40 @@ export default function DevPage() {
   }
 
   return (
-    <div className="dev-page">
-      <h1>Package Builder</h1>
+    <>
+      <Navbar />
+      <div className="dev-page">
+        <h1>Package Builder</h1>
 
-      <p className="subtitle">
-        Generate a complete spelling bee package from a list of words.
-      </p>
+        <p className="subtitle">
+          Generate a complete spelling bee package from a list of words.
+        </p>
 
-      <label>Merriam-Webster API Key</label>
+        <label>Merriam-Webster API Key</label>
 
-      <input
-        type="password"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-      />
+        <input
+          type="password"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+        />
 
-      <p>Your Merriam-Webster API Key is never stored by this application.</p>
+        <p>Your Merriam-Webster API Key is never stored by this application.</p>
 
-      <label>Words (one per line)</label>
+        <label>Words (one per line)</label>
 
-      <textarea
-        rows={20}
-        value={wordInput}
-        onChange={(e) => setWordInput(e.target.value)}
-      />
+        <textarea
+          rows={20}
+          value={wordInput}
+          onChange={(e) => setWordInput(e.target.value)}
+        />
 
-      <button
-        onClick={handleGenerate}
-        disabled={loading || apiKey.trim() === "" || wordInput.trim() === ""}
-      >
-        {loading ? "Generating Package..." : "Generate Package"}
-      </button>
-    </div>
+        <button
+          onClick={handleGenerate}
+          disabled={loading || apiKey.trim() === "" || wordInput.trim() === ""}
+        >
+          {loading ? "Generating Package..." : "Generate Package"}
+        </button>
+      </div>
+    </>
   );
 }

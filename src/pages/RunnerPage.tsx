@@ -12,6 +12,7 @@ import type {
   CompetitionPackage,
   CompetitionWord,
 } from "../types/spellingBee.js";
+import Navbar from "../components/Navbar.tsx";
 
 export default function RunnerPage() {
   const [words, setWords] = useState<CompetitionWord[]>([]);
@@ -114,19 +115,22 @@ export default function RunnerPage() {
   }
 
   return (
-    <div className="runner-page">
-      <ControlPanel
-        randomWordEnabled={canRandomize}
-        currentWordActive={currentWord !== null}
-        onUploadPackage={handleUploadPackage}
-        onRandomWord={handleRandomWord}
-        onCorrect={handleCorrect}
-        onEndRound={handleEndRound}
-      />
+    <>
+      <Navbar />
+      <div className="runner-page">
+        <ControlPanel
+          randomWordEnabled={canRandomize}
+          currentWordActive={currentWord !== null}
+          onUploadPackage={handleUploadPackage}
+          onRandomWord={handleRandomWord}
+          onCorrect={handleCorrect}
+          onEndRound={handleEndRound}
+        />
 
-      <CurrentWordPanel currentWord={currentWord} />
+        <CurrentWordPanel currentWord={currentWord} />
 
-      <WordList words={words} />
-    </div>
+        <WordList words={words} />
+      </div>
+    </>
   );
 }
