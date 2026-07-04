@@ -3,7 +3,7 @@ import "./HomePage.css";
 export default function HomePage() {
   return (
     <div className="home-page">
-      <h1>Spelling Bee Manager</h1>
+      <h1>Spelling Bee Toolkit</h1>
 
       <p className="subtitle">
         A tool for creating, editing, and running spelling bees.
@@ -34,13 +34,13 @@ export default function HomePage() {
         </ul>
 
         <p>
-          Once your API key is active, you can use Developer Mode to generate
+          Once your API key is active, you can use Package Builder to generate
           competition packages.
         </p>
       </div>
 
       <div className="home-card">
-        <h2>🛠 Developer Mode</h2>
+        <h2>🛠 Package Builder</h2>
 
         <p>Create a new competition package from a list of words.</p>
 
@@ -51,29 +51,28 @@ export default function HomePage() {
         </ul>
 
         <button onClick={() => (window.location.href = "/dev")}>
-          Open Developer Mode
+          Open Package Builder
         </button>
       </div>
 
       <div className="home-card">
-        <h2>✏️ JSON Editor</h2>
+        <h2>✏️ Package Editor</h2>
 
         <p>Review and edit an existing competition package.</p>
 
         <ul>
           <li>Edit definitions and examples.</li>
-          <li>Add or remove words.</li>
-          <li>Edit pronunciations and audio.</li>
+          <li>Add and remove words.</li>
           <li>Save the updated package.</li>
         </ul>
 
         <button onClick={() => (window.location.href = "/editor")}>
-          Open JSON Editor
+          Open Package Editor
         </button>
       </div>
 
       <div className="home-card">
-        <h2>🎤 Runner</h2>
+        <h2>🎤 Competition Runner</h2>
 
         <p>Load a competition package and run the spelling bee.</p>
 
@@ -85,7 +84,7 @@ export default function HomePage() {
         </ul>
 
         <button onClick={() => (window.location.href = "/run")}>
-          Open Runner
+          Open Competition Runner
         </button>
       </div>
 
@@ -95,15 +94,15 @@ export default function HomePage() {
         <pre>
           {`Word List
     ↓
-Developer Mode
+Package Builder
     ↓
 competition.zip
     ↓
-JSON Editor (optional)
+Package Editor (optional)
     ↓
 competition.zip
     ↓
-Runner`}
+Competition Runner`}
         </pre>
       </div>
 

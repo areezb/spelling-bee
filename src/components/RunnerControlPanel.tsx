@@ -70,7 +70,9 @@ export default function ControlPanel({
           Random Word
         </button>
 
-        <div className="runnner-button-row">
+        <div style={{ height: "5rem" }} />
+
+        <div className="runner-button-row">
           <button onClick={onCorrect} disabled={!currentWordActive}>
             Correct
           </button>
