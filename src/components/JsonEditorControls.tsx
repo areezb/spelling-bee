@@ -15,7 +15,7 @@ export default function EditorControlPanel({
 }: EditorControlPanelProps) {
   return (
     <div className="editor-control-panel">
-      <h2>JSON Editor</h2>
+      <h2>Package Editor</h2>
 
       <section>
         <button onClick={onLoad}>Load Package</button>
