@@ -9,11 +9,13 @@ interface EditorControlPanelProps {
   words: Record<string, CachedWord>;
 
   onLoadWords(packageData: CompetitionPackage): void;
+  onSave(): void;
 }
 
 export default function EditorControlPanel({
   words,
   onLoadWords,
+  onSave,
 }: EditorControlPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -59,6 +61,7 @@ export default function EditorControlPanel({
     link.click();
 
     URL.revokeObjectURL(url);
+    onSave();
   }
 
   return (

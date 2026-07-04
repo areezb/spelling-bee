@@ -10,6 +10,9 @@ function App() {
     case "/editor":
       return <JsonEditorPage />;
 
+    case "/run":
+      return <RunnerPage/>;
+
     default:
       return <RunnerPage />;
   }

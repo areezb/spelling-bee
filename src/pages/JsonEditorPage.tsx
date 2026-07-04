@@ -1,6 +1,6 @@
 import "./JsonEditorPage.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import EditorControlPanel from "../components/JsonEditorControls.js";
 import JsonWordEditor from "../components/JsonWordEditor.js";
@@ -16,12 +16,31 @@ export default function JsonEditorPage() {
   const currentWord =
     selectedWord == null ? null : (words[selectedWord] ?? null);
 
+  const [dirty, setDirty] = useState(false);
+
+  useEffect(() => {
+    function handleBeforeUnload(event: BeforeUnloadEvent) {
+      if (!dirty) {
+        return;
+      }
+
+      event.preventDefault();
+      event.returnValue = "";
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [dirty]);
+
   function handleLoadWords(loadedWords: CompetitionPackage) {
     setWords(loadedWords.words);
 
     const firstWord = Object.keys(loadedWords.words)[0];
 
     setSelectedWord(firstWord ?? null);
+
+    setDirty(false);
   }
 
   function handleWordChange(originalWord: string, updatedWord: CachedWord) {
@@ -36,6 +55,8 @@ export default function JsonEditorPage() {
       delete next[originalWord];
 
       next[updatedWord.word] = updatedWord;
+
+      setDirty(true);
 
       return next;
     });
@@ -65,6 +86,7 @@ export default function JsonEditorPage() {
     }));
 
     setSelectedWord(name);
+    setDirty(true);
   }
 
   function handleDeleteWord(wordName: string) {
@@ -81,11 +103,16 @@ export default function JsonEditorPage() {
 
       return next;
     });
+    setDirty(true);
   }
 
   return (
     <div className="editor-page">
-      <EditorControlPanel words={words} onLoadWords={handleLoadWords} />
+      <EditorControlPanel
+        words={words}
+        onLoadWords={handleLoadWords}
+        onSave={() => setDirty(false)}
+      />
 
       <JsonWordEditor
         word={currentWord}
