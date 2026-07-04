@@ -1,4 +1,4 @@
-import "./ControlPanel.css"
+import "./RunnerControlPanel.css"
 
 import { useRef } from "react";
 import type { ChangeEvent } from "react";

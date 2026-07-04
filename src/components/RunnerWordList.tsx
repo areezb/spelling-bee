@@ -1,6 +1,6 @@
-import "./WordList.css"
+import "./RunnerWordList.css"
 
-import type { CompetitionWord } from "../types/spellingBee.js";
+import type { CompetitionWord } from "../types/spellingBee.ts";
 
 interface WordListProps {
   words: CompetitionWord[];

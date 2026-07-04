@@ -9,6 +9,16 @@ interface JsonWordListProps {
   onAddWord(): void;
 }
 
+function isIncomplete(word: CachedWord) {
+  const hasDefinitions = word.meanings.some(
+    (meaning) => meaning.definitions.length > 0,
+  );
+
+  return (
+    !word.example || (!word.audioFile && !word.audioUrl) || !hasDefinitions
+  );
+}
+
 export default function JsonWordList({
   words,
   selectedWord,
@@ -17,9 +27,24 @@ export default function JsonWordList({
 }: JsonWordListProps) {
   const wordNames = Object.keys(words).sort();
 
+  const incompleteCount = wordNames.filter((word) =>
+    isIncomplete(words[word]),
+  ).length;
+
+  const completeCount = wordNames.length - incompleteCount;
+
   return (
     <div className="word-list">
       <h2>Words</h2>
+      <p className="word-list-summary">
+        {completeCount} / {wordNames.length} complete
+        {incompleteCount > 0 && (
+          <>
+            <br />
+            {incompleteCount} need attention
+          </>
+        )}
+      </p>
 
       <ul>
         {wordNames.map((word) => (
@@ -28,6 +53,7 @@ export default function JsonWordList({
             onClick={() => onSelectWord(word)}
             className={word === selectedWord ? "selected" : ""}
           >
+            {isIncomplete(words[word]) && "⚠ "}
             {word}
           </li>
         ))}

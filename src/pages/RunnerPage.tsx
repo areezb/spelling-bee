@@ -5,8 +5,8 @@ import { useState } from "react";
 import JSZip from "jszip";
 
 import CurrentWordPanel from "../components/CurrentWordPanel.js";
-import ControlPanel from "../components/ControlPanel.js";
-import WordList from "../components/WordList.js";
+import ControlPanel from "../components/RunnerControlPanel.tsx";
+import WordList from "../components/RunnerWordList.tsx";
 
 import type {
   CompetitionPackage,
