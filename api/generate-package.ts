@@ -3,7 +3,6 @@ import { buildCompetitionPackage } from "./services/packageBuilder.js";
 export default {
   async fetch(request: Request): Promise<Response> {
     try {
-
       if (request.method === "OPTIONS") {
         return new Response(null, {
           status: 204,
@@ -33,13 +32,14 @@ export default {
         });
       }
 
-      const zip = await buildCompetitionPackage(words, apiKey);
+      const result = await buildCompetitionPackage(words, apiKey);
 
-      return new Response(new Uint8Array(zip), {
+      return new Response(new Uint8Array(result.zip), {
         status: 200,
         headers: {
           "Content-Type": "application/zip",
           "Content-Disposition": 'attachment; filename="competition.zip"',
+          "X-Failed-Words": result.failedWords.join(","),
         },
       });
     } catch (error) {

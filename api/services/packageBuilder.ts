@@ -16,39 +16,52 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export interface PackageBuildResult {
+  zip: Buffer;
+  failedWords: string[];
+}
+
 export async function buildCompetitionPackage(
   words: string[],
   apiKey: string,
-): Promise<Buffer> {
+): Promise<PackageBuildResult> {
   const zip = new JSZip();
 
   const cache: Record<string, CachedWord> = {};
+
+  const failedWords: string[] = [];
 
   for (const word of words) {
     console.log(`Loading ${word}...`);
 
     try {
-      const cachedWord = await fetchWordFromMerriam(
-        word,
-        apiKey,
-      );
+      const cachedWord =
+        await fetchWordFromMerriam(
+          word,
+          apiKey,
+        );
 
       const exampleSentence =
-        await fetchExampleSentence(cachedWord.word);
+        await fetchExampleSentence(
+          cachedWord.word,
+        );
 
       if (exampleSentence) {
-        cachedWord.example = exampleSentence;
+        cachedWord.example =
+          exampleSentence;
       }
 
-      cache[cachedWord.word] = cachedWord;
+      cache[cachedWord.word] =
+        cachedWord;
 
       if (
         cachedWord.audioUrl &&
         cachedWord.audioFile
       ) {
-        const audio = await downloadAudio(
-          cachedWord.audioUrl,
-        );
+        const audio =
+          await downloadAudio(
+            cachedWord.audioUrl,
+          );
 
         zip.file(
           `audio/${cachedWord.audioFile}`,
@@ -62,18 +75,22 @@ export async function buildCompetitionPackage(
         `Failed to load ${word}`,
         error,
       );
+
+      failedWords.push(word);
+
+      cache[word] = {
+        word,
+        meanings: [],
+        example: "",
+        alternateSpellings: [],
+      };
     }
   }
 
-  if (Object.keys(cache).length === 0) {
-    throw new Error(
-      "No valid words were found.",
-    );
-  }
-
-  const competitionPackage: CompetitionPackage = {
-    words: cache,
-  };
+  const competitionPackage: CompetitionPackage =
+    {
+      words: cache,
+    };
 
   zip.file(
     "words.json",
@@ -84,7 +101,10 @@ export async function buildCompetitionPackage(
     ),
   );
 
-  return await zip.generateAsync({
-    type: "nodebuffer",
-  });
+  return {
+    zip: await zip.generateAsync({
+      type: "nodebuffer",
+    }),
+    failedWords,
+  };
 }

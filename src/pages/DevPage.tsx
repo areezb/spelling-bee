@@ -33,6 +33,10 @@ export default function DevPage() {
         throw new Error(await response.text());
       }
 
+      const failedWords =
+        response.headers.get("X-Failed-Words")?.split(",").filter(Boolean) ??
+        [];
+
       const blob = await response.blob();
 
       const url = URL.createObjectURL(blob);
@@ -47,13 +51,20 @@ export default function DevPage() {
       a.remove();
 
       URL.revokeObjectURL(url);
+
+      if (failedWords.length > 0) {
+        alert(
+          "Package generated.\n\n" +
+            "No information was found for the following words:\n\n" +
+            failedWords.join("\n") +
+            "\n\nThese words were added as blank entries. Use the JSON Editor to complete them manually.",
+        );
+      }
     } catch (error) {
       console.error(error);
 
       alert(
-        error instanceof Error
-          ? error.message
-          : "Failed to generate package.",
+        error instanceof Error ? error.message : "Failed to generate package.",
       );
     } finally {
       setLoading(false);
@@ -65,13 +76,10 @@ export default function DevPage() {
       <h1>Package Builder</h1>
 
       <p className="subtitle">
-        Generate a complete spelling bee package from a
-        list of words.
+        Generate a complete spelling bee package from a list of words.
       </p>
 
-      <label>
-        Merriam-Webster API Key
-      </label>
+      <label>Merriam-Webster API Key</label>
 
       <input
         type="password"
@@ -79,33 +87,21 @@ export default function DevPage() {
         onChange={(e) => setApiKey(e.target.value)}
       />
 
-      <p>
-        Your Merriam-Webster API Key is never stored by this application.
-      </p>
+      <p>Your Merriam-Webster API Key is never stored by this application.</p>
 
-      <label>
-        Words (one per line)
-      </label>
+      <label>Words (one per line)</label>
 
       <textarea
         rows={20}
         value={wordInput}
-        onChange={(e) =>
-          setWordInput(e.target.value)
-        }
+        onChange={(e) => setWordInput(e.target.value)}
       />
 
       <button
         onClick={handleGenerate}
-        disabled={
-          loading ||
-          apiKey.trim() === "" ||
-          wordInput.trim() === ""
-        }
+        disabled={loading || apiKey.trim() === "" || wordInput.trim() === ""}
       >
-        {loading
-          ? "Generating Package..."
-          : "Generate Package"}
+        {loading ? "Generating Package..." : "Generate Package"}
       </button>
     </div>
   );
