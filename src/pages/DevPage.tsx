@@ -59,6 +59,8 @@ export default function DevPage() {
             failedWords.join("\n") +
             "\n\nThese words were added as blank entries. Use the JSON Editor to complete them manually.",
         );
+      } else {
+        alert("Package successfully generated.")
       }
     } catch (error) {
       console.error(error);
