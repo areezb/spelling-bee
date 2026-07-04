@@ -48,6 +48,7 @@ export default function HomePage() {
           <li>Enter your Merriam-Webster API key.</li>
           <li>Copy in a list of words, one word per line.</li>
           <li>Download a complete competition package.</li>
+          <li>The package will include definitions, parts of speech, pronunciation audio, and in most cases example sentences.</li>
         </ul>
 
         <button onClick={() => (window.location.href = "/dev")}>
