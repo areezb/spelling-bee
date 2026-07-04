@@ -1,4 +1,4 @@
-import "./RunnerControlPanel.css"
+import "./RunnerControlPanel.css";
 
 import { useRef } from "react";
 import type { ChangeEvent } from "react";
@@ -30,9 +30,7 @@ export default function ControlPanel({
     fileInputRef.current?.click();
   }
 
-  function handleFileChange(
-    event: ChangeEvent<HTMLInputElement>,
-  ) {
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (!file) {
@@ -46,51 +44,42 @@ export default function ControlPanel({
   }
 
   return (
-    <div className="control-panel">
+    <div className="runner-control-panel">
       <h2>Controls</h2>
 
-      <h3>Package</h3>
+      <section>
+        <h3>Package</h3>
 
-      <button onClick={handleUploadClick}>
-        Load Package
-      </button>
+        <button onClick={handleUploadClick}>Load Package</button>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".zip"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".zip"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
+      </section>
 
       <hr />
 
-      <h3>Competition</h3>
+      <section>
+        <h3>Competition</h3>
 
-      <button
-        onClick={onRandomWord}
-        disabled={!randomWordEnabled}
-      >
-        Random Word
-      </button>
+        <button onClick={onRandomWord} disabled={!randomWordEnabled}>
+          Random Word
+        </button>
 
-      <br />
-      <br />
+        <div className="runnner-button-row">
+          <button onClick={onCorrect} disabled={!currentWordActive}>
+            Correct
+          </button>
 
-      <button
-        onClick={onCorrect}
-        disabled={!currentWordActive}
-      >
-        Correct
-      </button>
-
-      <button
-        onClick={onEndRound}
-        disabled={!currentWordActive}
-        style={{ marginLeft: "0.5rem" }}
-      >
-        End Round
-      </button>
+          <button onClick={onEndRound} disabled={!currentWordActive}>
+            End Round
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

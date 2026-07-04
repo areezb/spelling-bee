@@ -34,9 +34,9 @@ export default function JsonWordList({
   const completeCount = wordNames.length - incompleteCount;
 
   return (
-    <div className="word-list">
+    <div className="editor-word-list">
       <h2>Words</h2>
-      <p className="word-list-summary">
+      <p className="editor-word-list-summary">
         {completeCount} / {wordNames.length} complete
         {incompleteCount > 0 && (
           <>

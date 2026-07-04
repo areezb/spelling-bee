@@ -1,4 +1,4 @@
-.word-list {
+.runner-word-list {
   width: 300px;
   flex-shrink: 0;
 
@@ -11,12 +11,12 @@
   overflow-y: auto;
 }
 
-.word-list {
+.runner-word-list {
   display: flex;
   flex-direction: column;
 }
 
-.word-list ul {
+.runner-word-list ul {
   flex: 1;
   overflow-y: auto;
 

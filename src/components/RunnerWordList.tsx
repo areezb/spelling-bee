@@ -10,7 +10,7 @@ export default function WordList({
   words,
 }: WordListProps) {
   return (
-    <div className="word-list">
+    <div className="runner-word-list">
       <h2>Word List</h2>
 
       <ul>

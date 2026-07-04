@@ -1,4 +1,4 @@
-.word-list {
+.editor-word-list {
   width: 250px;
   flex-shrink: 0;
   height: 100%;
@@ -15,17 +15,17 @@
   overflow-y: auto;
 }
 
-.word-list h2 {
+.editor-word-list h2 {
   margin-top: 0;
 }
 
-.word-list ul {
+.editor-word-list ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.word-list li {
+.editor-word-list li {
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
 
@@ -33,11 +33,18 @@
   user-select: none;
 }
 
-.word-list li:hover {
+.editor-word-list li:hover {
   background: #f3f3f3;
 }
 
-.word-list li.selected {
+.editor-word-list li.selected {
   background: #dbeafe;
   font-weight: bold;
+}
+
+.editor-word-list button {
+  width: 100%;
+  padding: 0.6rem;
+
+  font: inherit;
 }
