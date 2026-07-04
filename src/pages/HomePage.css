@@ -1,0 +1,67 @@
+.home-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.home-page h1 {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-top: 0;
+}
+
+.home-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  padding: 1.5rem;
+}
+
+.home-card h2 {
+  margin-top: 0;
+}
+
+.home-card ul {
+  margin-bottom: 1.5rem;
+}
+
+.home-card button {
+  padding: 0.5rem 1rem;
+}
+
+.workflow {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  padding: 1.5rem;
+}
+
+.workflow h2 {
+  margin-top: 0;
+}
+
+.workflow pre {
+  margin: 0;
+
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+
+  padding-top: 1rem;
+}

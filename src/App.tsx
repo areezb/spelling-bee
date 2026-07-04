@@ -1,6 +1,7 @@
 import DevPage from "./pages/DevPage.js";
 import RunnerPage from "./pages/RunnerPage.js";
 import JsonEditorPage from "./pages/JsonEditorPage.js";
+import HomePage from "./pages/HomePage.tsx";
 
 function App() {
   switch (window.location.pathname) {
@@ -11,10 +12,10 @@ function App() {
       return <JsonEditorPage />;
 
     case "/run":
-      return <RunnerPage/>;
+      return <RunnerPage />;
 
     default:
-      return <RunnerPage />;
+      return <HomePage />;
   }
 }
 

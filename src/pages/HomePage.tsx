@@ -1,0 +1,105 @@
+import "./HomePage.css";
+
+export default function HomePage() {
+  return (
+    <div className="home-page">
+      <h1>Spelling Bee Manager</h1>
+
+      <p className="subtitle">
+        A tool for creating, editing, and running spelling bees.
+      </p>
+
+      <div className="home-card">
+        <h2>🛠 Developer Mode</h2>
+
+        <p>
+          Create a new competition package from a list of
+          words.
+        </p>
+
+        <ul>
+          <li>Enter your Merriam-Webster API key.</li>
+          <li>Upload a text file containing one word per line.</li>
+          <li>Download a complete competition package.</li>
+        </ul>
+
+        <button
+          onClick={() =>
+            (window.location.href = "/dev")
+          }
+        >
+          Open Developer Mode
+        </button>
+      </div>
+
+      <div className="home-card">
+        <h2>✏️ JSON Editor</h2>
+
+        <p>
+          Review and edit an existing competition package.
+        </p>
+
+        <ul>
+          <li>Edit definitions and examples.</li>
+          <li>Add or remove words.</li>
+          <li>Edit pronunciations and audio.</li>
+          <li>Save the updated package.</li>
+        </ul>
+
+        <button
+          onClick={() =>
+            (window.location.href = "/editor")
+          }
+        >
+          Open JSON Editor
+        </button>
+      </div>
+
+      <div className="home-card">
+        <h2>🎤 Runner</h2>
+
+        <p>
+          Load a competition package and run the spelling
+          bee.
+        </p>
+
+        <ul>
+          <li>Randomly select unused words.</li>
+          <li>Play pronunciation audio.</li>
+          <li>View definitions and examples.</li>
+          <li>Track used words.</li>
+        </ul>
+
+        <button
+          onClick={() =>
+            (window.location.href = "/run")
+          }
+        >
+          Open Runner
+        </button>
+      </div>
+
+      <div className="workflow">
+        <h2>Workflow</h2>
+
+        <pre>
+{`Word List
+    ↓
+Developer Mode
+    ↓
+competition.zip
+    ↓
+JSON Editor (optional)
+    ↓
+competition.zip
+    ↓
+Runner`}
+        </pre>
+      </div>
+
+      <footer>
+        Version 1.0
+      </footer>
+    </div>
+  );
+}
