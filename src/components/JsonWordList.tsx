@@ -41,7 +41,10 @@ export default function JsonWordList({
         {incompleteCount > 0 && (
           <>
             <br />
-            {incompleteCount} need attention
+            {incompleteCount}{" "}
+            {incompleteCount === 1
+              ? "word needs attention"
+              : "words need attention"}
           </>
         )}
       </p>

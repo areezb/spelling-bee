@@ -13,8 +13,15 @@ export default function HomePage() {
         <h2>📖 Before You Begin</h2>
 
         <p>
-          To generate competition packages, you'll need a Merriam-Webster
-          Dictionary API key.
+          To generate competition packages, you'll need a{" "}
+          <a
+            href="https://dictionaryapi.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Merriam-Webster Dictionary API key
+          </a>
+          .
         </p>
 
         <ul>
