@@ -10,24 +10,40 @@ export default function HomePage() {
       </p>
 
       <div className="home-card">
-        <h2>🛠 Developer Mode</h2>
+        <h2>📖 Before You Begin</h2>
 
         <p>
-          Create a new competition package from a list of
-          words.
+          To generate competition packages, you'll need a Merriam-Webster
+          Dictionary API key.
         </p>
 
         <ul>
+          <li>Create a Merriam-Webster developer account.</li>
+          <li>Request an API key.</li>
+          <li>
+            Make sure your key has access to the{" "}
+            <strong>Collegiate Dictionary API</strong>.
+          </li>
+        </ul>
+
+        <p>
+          Once your API key is active, you can use Developer Mode to generate
+          competition packages.
+        </p>
+      </div>
+
+      <div className="home-card">
+        <h2>🛠 Developer Mode</h2>
+
+        <p>Create a new competition package from a list of words.</p>
+
+        <ul>
           <li>Enter your Merriam-Webster API key.</li>
-          <li>Upload a text file containing one word per line.</li>
+          <li>Copy in a list of words, one word per line.</li>
           <li>Download a complete competition package.</li>
         </ul>
 
-        <button
-          onClick={() =>
-            (window.location.href = "/dev")
-          }
-        >
+        <button onClick={() => (window.location.href = "/dev")}>
           Open Developer Mode
         </button>
       </div>
@@ -35,9 +51,7 @@ export default function HomePage() {
       <div className="home-card">
         <h2>✏️ JSON Editor</h2>
 
-        <p>
-          Review and edit an existing competition package.
-        </p>
+        <p>Review and edit an existing competition package.</p>
 
         <ul>
           <li>Edit definitions and examples.</li>
@@ -46,11 +60,7 @@ export default function HomePage() {
           <li>Save the updated package.</li>
         </ul>
 
-        <button
-          onClick={() =>
-            (window.location.href = "/editor")
-          }
-        >
+        <button onClick={() => (window.location.href = "/editor")}>
           Open JSON Editor
         </button>
       </div>
@@ -58,10 +68,7 @@ export default function HomePage() {
       <div className="home-card">
         <h2>🎤 Runner</h2>
 
-        <p>
-          Load a competition package and run the spelling
-          bee.
-        </p>
+        <p>Load a competition package and run the spelling bee.</p>
 
         <ul>
           <li>Randomly select unused words.</li>
@@ -70,11 +77,7 @@ export default function HomePage() {
           <li>Track used words.</li>
         </ul>
 
-        <button
-          onClick={() =>
-            (window.location.href = "/run")
-          }
-        >
+        <button onClick={() => (window.location.href = "/run")}>
           Open Runner
         </button>
       </div>
@@ -83,7 +86,7 @@ export default function HomePage() {
         <h2>Workflow</h2>
 
         <pre>
-{`Word List
+          {`Word List
     ↓
 Developer Mode
     ↓
@@ -97,9 +100,7 @@ Runner`}
         </pre>
       </div>
 
-      <footer>
-        Version 1.0
-      </footer>
+      <footer>Version 1.0</footer>
     </div>
   );
 }
