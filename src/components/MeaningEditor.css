@@ -1,0 +1,46 @@
+.meaning-editor {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  padding: 1rem;
+
+  margin-top: 1.5rem;
+}
+
+.meaning-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1rem;
+}
+
+.definition-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  margin-bottom: 1rem;
+}
+
+.definition-row textarea {
+  flex: 1;
+
+  min-height: 4.5rem;
+  resize: vertical;
+
+  font: inherit;
+}
+
+.definition-row button {
+  flex-shrink: 0;
+
+  width: 2rem;
+  height: 2rem;
+
+  margin-top: 0.25rem;
+}
+
+.definition-row input {
+  flex: 1;
+}

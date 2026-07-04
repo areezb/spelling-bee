@@ -1,3 +1,5 @@
+import "./JsonEditorControls.css"
+
 import { useRef } from "react";
 import type { ChangeEvent } from "react";
 
@@ -70,7 +72,6 @@ export default function EditorControlPanel({
         type="file"
         accept=".json"
         onChange={handleFileChange}
-        style={{ display: "none" }}
       />
 
       <br />

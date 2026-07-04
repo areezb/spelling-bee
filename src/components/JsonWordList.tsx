@@ -1,10 +1,10 @@
+import "./JsonWordList.css";
+
 import type { CachedWord } from "../types/spellingBee.js";
 
 interface JsonWordListProps {
   words: Record<string, CachedWord>;
-
   selectedWord: string | null;
-
   onSelectWord(word: string): void;
 }
 
@@ -24,13 +24,7 @@ export default function JsonWordList({
           <li
             key={word}
             onClick={() => onSelectWord(word)}
-            style={{
-              cursor: "pointer",
-              fontWeight:
-                word === selectedWord
-                  ? "bold"
-                  : "normal",
-            }}
+            className={word === selectedWord ? "selected" : ""}
           >
             {word}
           </li>

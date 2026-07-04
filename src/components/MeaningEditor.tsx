@@ -1,3 +1,5 @@
+import "./MeaningEditor.css"
+
 import type { Meaning } from "../types/spellingBee.js";
 
 interface MeaningEditorProps {
@@ -78,8 +80,7 @@ export default function MeaningEditor({
             key={index}
             className="definition-row"
           >
-            <input
-              type="text"
+            <textarea
               value={definition.definition}
               onChange={(event) =>
                 updateDefinition(

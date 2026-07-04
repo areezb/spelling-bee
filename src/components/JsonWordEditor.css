@@ -1,0 +1,54 @@
+.word-editor {
+  flex: 1;
+  overflow-y: auto;
+
+  padding: 1.5rem;
+}
+
+.word-editor h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.word-editor label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.word-editor input,
+.word-editor textarea {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 0.5rem;
+
+  margin-bottom: 1rem;
+
+  font: inherit;
+}
+
+.word-editor textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.alternate-spelling-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.alternate-spelling-row input {
+  flex: 1;
+}
+
+.alternate-spelling-row button {
+  flex-shrink: 0;
+
+  width: 2rem;
+  height: 2rem;
+
+  margin-top: 0.25rem;
+}
