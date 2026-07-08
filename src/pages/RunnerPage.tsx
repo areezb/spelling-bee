@@ -48,20 +48,23 @@ export default function RunnerPage() {
     const loadedWords: CompetitionWord[] = [];
 
     for (const cachedWord of Object.values(packageData.words)) {
-      let audioUrl = cachedWord.audioUrl;
-
-      if (!audioUrl && cachedWord.audioFile) {
+      let playbackAudio: string | undefined;
+      
+      if (cachedWord.audioFile) {
         const audioFile = zip.file(`audio/${cachedWord.audioFile}`);
-
+      
         if (audioFile) {
-          const blob = await audioFile.async("blob");
-          audioUrl = URL.createObjectURL(blob);
-        }
+            const blob = await audioFile.async("blob");
+            playbackAudio = URL.createObjectURL(blob);
+          }
+      }
+      if (!playbackAudio) {
+        playbackAudio = cachedWord.audioUrl;
       }
 
       loadedWords.push({
         ...cachedWord,
-        audioUrl,
+        playbackAudio,
         used: false,
         active: false,
       });
