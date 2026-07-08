@@ -58,7 +58,7 @@ export default function RunnerPage() {
             playbackAudio = URL.createObjectURL(blob);
           }
       }
-      if (!cachedWord.audioFile) {
+      if (cachedWord.audioUrl && !playbackAudio) {
         playbackAudio = cachedWord.audioUrl;
       }
 
