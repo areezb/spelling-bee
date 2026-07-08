@@ -16,6 +16,8 @@ export interface CachedWord {
 
   alternateSpellings?: string[];
 
+  playbackAudio?: string;
+
   audioFile?: string;
 
   audioUrl?: string;
