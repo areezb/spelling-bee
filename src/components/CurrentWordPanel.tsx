@@ -21,7 +21,7 @@ export default function CurrentWordPanel({
               : null}
           </h2>
 
-          {currentWord.audioUrl && (
+          {currentWord.playbackAudio && (
             <div className="audio-player">
               <audio controls src={currentWord.playbackAudio} />
             </div>
