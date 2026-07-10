@@ -23,10 +23,6 @@ export interface CachedWord {
   example?: string;
 
   alternateSpellings?: string[];
-
-  audioFile?: string;
-
-  audioUrl?: string;
 }
 
 export interface CompetitionWord extends CachedWord {

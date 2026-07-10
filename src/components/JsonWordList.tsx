@@ -14,8 +14,14 @@ function isIncomplete(word: CachedWord) {
     (meaning) => meaning.definitions.length > 0,
   );
 
+  const hasAudio = word.meanings.some((meaning) =>
+    meaning.pronunciations.some(
+      (pronunciation) => pronunciation.audioFile || pronunciation.audioUrl,
+    ),
+  );
+
   return (
-    !word.example || (!word.audioFile && !word.audioUrl) || !hasDefinitions
+    !word.example || (!hasAudio) || !hasDefinitions
   );
 }
 

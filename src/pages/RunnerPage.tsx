@@ -27,8 +27,12 @@ export default function RunnerPage() {
   async function handleUploadPackage(file: File) {
     // Clean up any existing blob URLs.
     words.forEach((word) => {
-      if (word.audioUrl?.startsWith("blob:")) {
-        URL.revokeObjectURL(word.audioUrl);
+      for (const meaning of word.meanings) {
+        for (const pronunciation of meaning.pronunciations) {
+          if (pronunciation.playbackAudio?.startsWith("blob:")) {
+            URL.revokeObjectURL(pronunciation.playbackAudio);
+          }
+        }
       }
     });
 
