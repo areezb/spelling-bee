@@ -1,7 +1,19 @@
-import type { CachedWord, Meaning } from "../../src/types/spellingBee.js";
+import type {
+  CachedWord,
+  Meaning,
+  Pronunciation,
+} from "../../src/types/spellingBee.js";
 
 const BASE_URL =
   "https://www.dictionaryapi.com/api/v3/references/collegiate/json";
+
+interface MerriamWebsterPronunciation {
+  mw?: string;
+
+  sound?: {
+    audio: string;
+  };
+}
 
 interface MerriamWebsterEntry {
   meta: {
@@ -11,13 +23,7 @@ interface MerriamWebsterEntry {
   hwi?: {
     hw?: string;
 
-    prs?: {
-      mw?: string;
-
-      sound?: {
-        audio: string;
-      };
-    }[];
+    prs?: MerriamWebsterPronunciation[];
   };
 
   fl?: string;
@@ -47,6 +53,39 @@ function getAudioUrl(audio: string): string {
   }
 
   return `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audio}.mp3`;
+}
+
+function buildPronunciations(
+  prs: MerriamWebsterPronunciation[],
+): Pronunciation[] {
+  const pronunciations: Pronunciation[] = [];
+
+  for (const pr of prs) {
+    const mw = pr.mw ?? "";
+
+    // Continuation of the previous pronunciation
+    if (mw.startsWith("-") && pronunciations.length > 0) {
+      const previous = pronunciations[pronunciations.length - 1];
+
+      previous.pronunciation += mw;
+
+      // If the continuation happens to contain audio, keep it.
+      if (pr.sound?.audio) {
+        previous.audioFile = `${pr.sound.audio}.mp3`;
+        previous.audioUrl = getAudioUrl(pr.sound.audio);
+      }
+
+      continue;
+    }
+
+    pronunciations.push({
+      pronunciation: mw,
+      audioFile: pr.sound?.audio ? `${pr.sound.audio}.mp3` : undefined,
+      audioUrl: pr.sound?.audio ? getAudioUrl(pr.sound.audio) : undefined,
+    });
+  }
+
+  return pronunciations;
 }
 
 export async function fetchWordFromMerriam(
@@ -101,12 +140,7 @@ export async function fetchWordFromMerriam(
     definitions: entry.shortdef!.map((definition) => ({
       definition,
     })),
-    pronunciations:
-      entry.hwi?.prs?.map((pr) => ({
-        pronunciation: pr.mw ?? "",
-        audioFile: pr.sound?.audio ? `${pr.sound.audio}.mp3` : undefined,
-        audioUrl: pr.sound?.audio ? getAudioUrl(pr.sound.audio) : undefined,
-      })) ?? [],
+    pronunciations: buildPronunciations(entry.hwi?.prs ?? []),
   }));
 
   const firstEntry = dictionaryEntries[0];
