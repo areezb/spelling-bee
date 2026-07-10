@@ -1,7 +1,4 @@
-import type {
-  CachedWord,
-  Meaning,
-} from "../../src/types/spellingBee.js";
+import type { CachedWord, Meaning } from "../../src/types/spellingBee.js";
 
 const BASE_URL =
   "https://www.dictionaryapi.com/api/v3/references/collegiate/json";
@@ -79,9 +76,7 @@ export async function fetchWordFromMerriam(
   const normalizedWord = word.toLowerCase();
 
   const dictionaryEntries = entries.filter((entry) => {
-    const id = entry.meta.id
-      .split(":")[0]
-      .toLowerCase();
+    const id = entry.meta.id.split(":")[0].toLowerCase();
 
     return (
       id === normalizedWord &&
@@ -97,9 +92,7 @@ export async function fetchWordFromMerriam(
 
   const alternateSpellings = entries
     .filter((entry) =>
-      entry.cxs?.some((cx) =>
-        cx.cxl.toLowerCase().includes("spelling of"),
-      ),
+      entry.cxs?.some((cx) => cx.cxl.toLowerCase().includes("spelling of")),
     )
     .map((entry) => entry.meta.id);
 
@@ -108,16 +101,20 @@ export async function fetchWordFromMerriam(
     definitions: entry.shortdef!.map((definition) => ({
       definition,
     })),
+    pronunciations:
+      entry.hwi?.prs?.map((pr) => ({
+        pronunciation: pr.mw ?? "",
+        audioFile: pr.sound?.audio ? `${pr.sound.audio}.mp3` : undefined,
+        audioUrl: pr.sound?.audio ? getAudioUrl(pr.sound.audio) : undefined,
+      })) ?? [],
   }));
 
   const firstEntry = dictionaryEntries[0];
 
   const displayWord =
-    firstEntry.hwi?.hw?.replace(/\*/g, "") ??
-    firstEntry.meta.id;
+    firstEntry.hwi?.hw?.replace(/\*/g, "") ?? firstEntry.meta.id;
 
-  const audioId =
-    firstEntry.hwi?.prs?.[0]?.sound?.audio;
+  const audioId = firstEntry.hwi?.prs?.[0]?.sound?.audio;
 
   return {
     word: displayWord,
@@ -132,9 +129,7 @@ export async function fetchWordFromMerriam(
   };
 }
 
-export async function downloadAudio(
-  audioUrl: string,
-): Promise<Buffer> {
+export async function downloadAudio(audioUrl: string): Promise<Buffer> {
   const response = await fetch(audioUrl);
 
   if (!response.ok) {

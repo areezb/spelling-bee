@@ -1,9 +1,6 @@
 import JSZip from "jszip";
 
-import {
-  downloadAudio,
-  fetchWordFromMerriam,
-} from "./merriamWebster.js";
+import { downloadAudio, fetchWordFromMerriam } from "./merriamWebster.js";
 
 import { fetchExampleSentence } from "./exampleSentence.js";
 
@@ -31,50 +28,43 @@ export async function buildCompetitionPackage(
 
   const failedWords: string[] = [];
 
+  const downloadedAudio = new Set<string>();
+
   for (const word of words) {
     console.log(`Loading ${word}...`);
 
     try {
-      const cachedWord =
-        await fetchWordFromMerriam(
-          word,
-          apiKey,
-        );
+      const cachedWord = await fetchWordFromMerriam(word, apiKey);
 
-      const exampleSentence =
-        await fetchExampleSentence(
-          cachedWord.word,
-        );
+      const exampleSentence = await fetchExampleSentence(cachedWord.word);
 
       if (exampleSentence) {
-        cachedWord.example =
-          exampleSentence;
+        cachedWord.example = exampleSentence;
       }
 
-      cache[cachedWord.word] =
-        cachedWord;
+      cache[cachedWord.word] = cachedWord;
 
-      if (
-        cachedWord.audioUrl &&
-        cachedWord.audioFile
-      ) {
-        const audio =
-          await downloadAudio(
-            cachedWord.audioUrl,
-          );
+      for (const meaning of cachedWord.meanings) {
+        for (const pronunciation of meaning.pronunciations) {
+          if (
+            !pronunciation.audioUrl ||
+            !pronunciation.audioFile ||
+            downloadedAudio.has(pronunciation.audioFile)
+          ) {
+            continue;
+          }
 
-        zip.file(
-          `audio/${cachedWord.audioFile}`,
-          audio,
-        );
+          const audio = await downloadAudio(pronunciation.audioUrl);
+
+          zip.file(`audio/${pronunciation.audioFile}`, audio);
+
+          downloadedAudio.add(pronunciation.audioFile);
+        }
       }
 
       await sleep(50);
     } catch (error) {
-      console.error(
-        `Failed to load ${word}`,
-        error,
-      );
+      console.error(`Failed to load ${word}`, error);
 
       failedWords.push(word);
 
@@ -87,19 +77,11 @@ export async function buildCompetitionPackage(
     }
   }
 
-  const competitionPackage: CompetitionPackage =
-    {
-      words: cache,
-    };
+  const competitionPackage: CompetitionPackage = {
+    words: cache,
+  };
 
-  zip.file(
-    "words.json",
-    JSON.stringify(
-      competitionPackage,
-      null,
-      2,
-    ),
-  );
+  zip.file("words.json", JSON.stringify(competitionPackage, null, 2));
 
   return {
     zip: await zip.generateAsync({

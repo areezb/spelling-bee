@@ -1,4 +1,4 @@
-import "./CurrentWordPanel.css"
+import "./CurrentWordPanel.css";
 
 import type { CompetitionWord } from "../types/spellingBee.js";
 
@@ -9,6 +9,20 @@ interface CurrentWordPanelProps {
 export default function CurrentWordPanel({
   currentWord,
 }: CurrentWordPanelProps) {
+  if (!currentWord) {
+    return (
+      <div className="current-word-panel">
+        <h2>No word selected</h2>
+      </div>
+    );
+  }
+  const pronunciations = Array.from(
+    new Map(
+      currentWord.meanings
+        .flatMap((m) => m.pronunciations)
+        .map((p) => [p.pronunciation, p]),
+    ).values(),
+  );
   return (
     <div className="current-word-panel">
       {currentWord ? (
@@ -21,10 +35,20 @@ export default function CurrentWordPanel({
               : null}
           </h2>
 
-          {currentWord.audioUrl && (
-            <div className="audio-player">
-              <audio controls src={currentWord.audioUrl} />
-            </div>
+          {pronunciations.length > 0 && (
+            <>
+              <h3>Pronunciations</h3>
+
+              {pronunciations.map((pronunciation, index) => (
+                <div key={index} className="audio-player">
+                  <span>{pronunciation.pronunciation}</span>
+
+                  {pronunciation.audioUrl && (
+                    <audio controls src={pronunciation.audioUrl} />
+                  )}
+                </div>
+              ))}
+            </>
           )}
 
           {currentWord.meanings.map((meaning) => (

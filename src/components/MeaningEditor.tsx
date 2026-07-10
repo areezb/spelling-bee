@@ -1,4 +1,4 @@
-import "./MeaningEditor.css"
+import "./MeaningEditor.css";
 
 import type { Meaning } from "../types/spellingBee.js";
 
@@ -15,10 +15,7 @@ export default function MeaningEditor({
   onChange,
   onDelete,
 }: MeaningEditorProps) {
-  function updateDefinition(
-    index: number,
-    definition: string,
-  ) {
+  function updateDefinition(index: number, definition: string) {
     const definitions = [...meaning.definitions];
 
     definitions[index] = {
@@ -34,17 +31,50 @@ export default function MeaningEditor({
   function addDefinition() {
     onChange({
       ...meaning,
-      definitions: [
-        ...meaning.definitions,
-        { definition: "" },
-      ],
+      definitions: [...meaning.definitions, { definition: "" }],
     });
   }
 
   function removeDefinition(index: number) {
     onChange({
       ...meaning,
-      definitions: meaning.definitions.filter(
+      definitions: meaning.definitions.filter((_, i) => i !== index),
+    });
+  }
+
+  function updatePronunciation(
+    index: number,
+    changes: Partial<Meaning["pronunciations"][number]>,
+  ) {
+    const pronunciations = [...(meaning.pronunciations)];
+
+    pronunciations[index] = {
+      ...pronunciations[index],
+      ...changes,
+    };
+
+    onChange({
+      ...meaning,
+      pronunciations,
+    });
+  }
+
+  function addPronunciation() {
+    onChange({
+      ...meaning,
+      pronunciations: [
+        ...(meaning.pronunciations),
+        {
+          pronunciation: "",
+        },
+      ],
+    });
+  }
+
+  function removePronunciation(index: number) {
+    onChange({
+      ...meaning,
+      pronunciations: (meaning.pronunciations).filter(
         (_, i) => i !== index,
       ),
     });
@@ -67,43 +97,72 @@ export default function MeaningEditor({
           />
         </label>
 
-        <button onClick={onDelete}>
-          Delete Part of Speech
-        </button>
+        <button onClick={onDelete}>Delete Part of Speech</button>
       </div>
+
+      <h4>Pronunciations</h4>
+
+      {(meaning.pronunciations).map((pronunciation, index) => (
+        <div key={index} className="pronunciation-row">
+          <input
+            type="text"
+            placeholder="Pronunciation"
+            value={pronunciation.pronunciation}
+            onChange={(event) =>
+              updatePronunciation(index, {
+                pronunciation: event.target.value,
+              })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Audio File"
+            value={pronunciation.audioFile ?? ""}
+            onChange={(event) =>
+              updatePronunciation(index, {
+                audioFile:
+                  event.target.value.trim() === ""
+                    ? undefined
+                    : event.target.value,
+              })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Audio URL"
+            value={pronunciation.audioUrl ?? ""}
+            onChange={(event) =>
+              updatePronunciation(index, {
+                audioUrl:
+                  event.target.value.trim() === ""
+                    ? undefined
+                    : event.target.value,
+              })
+            }
+          />
+
+          <button onClick={() => removePronunciation(index)}>×</button>
+        </div>
+      ))}
+
+      <button onClick={addPronunciation}>Add Pronunciation</button>
 
       <h4>Definitions</h4>
 
-      {meaning.definitions.map(
-        (definition, index) => (
-          <div
-            key={index}
-            className="definition-row"
-          >
-            <textarea
-              value={definition.definition}
-              onChange={(event) =>
-                updateDefinition(
-                  index,
-                  event.target.value,
-                )
-              }
-            />
+      {meaning.definitions.map((definition, index) => (
+        <div key={index} className="definition-row">
+          <textarea
+            value={definition.definition}
+            onChange={(event) => updateDefinition(index, event.target.value)}
+          />
 
-            <button
-              onClick={() =>
-                removeDefinition(index)
-              }
-            >
-              ×
-            </button>
-          </div>
-        ),
-      )}
+          <button onClick={() => removeDefinition(index)}>×</button>
+        </div>
+      ))}
 
-      <button onClick={addDefinition}>
-        Add Definition
-      </button>
+      <button onClick={addDefinition}>Add Definition</button>
 
       <hr />
     </div>

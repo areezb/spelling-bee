@@ -43,13 +43,10 @@ export default function JsonWordEditor({
     } as Pick<CachedWord, K>);
   }
 
-  function updateOptionalField<K extends "example" | "audioFile" | "audioUrl">(
-    key: K,
-    value: string,
-  ) {
+  function updateExample(value: string) {
     updateField(
-      key,
-      (value.trim() === "" ? undefined : value) as CachedWord[K],
+      "example",
+      (value.trim() === "" ? undefined : value) as CachedWord["example"],
     );
   }
 
@@ -66,6 +63,7 @@ export default function JsonWordEditor({
       {
         partOfSpeech: "",
         definitions: [],
+        pronunciations: [],
       },
     ]);
   }
@@ -93,7 +91,7 @@ export default function JsonWordEditor({
         Example
         <textarea
           value={currentWord.example ?? ""}
-          onChange={(e) => updateOptionalField("example", e.target.value)}
+          onChange={(e) => updateExample(e.target.value)}
         />
       </label>
 
@@ -137,22 +135,6 @@ export default function JsonWordEditor({
       >
         Add Alternate Spelling
       </button>
-
-      <label>
-        Audio File
-        <input
-          value={currentWord.audioFile ?? ""}
-          onChange={(e) => updateOptionalField("audioFile", e.target.value)}
-        />
-      </label>
-
-      <label>
-        Audio URL
-        <input
-          value={currentWord.audioUrl ?? ""}
-          onChange={(e) => updateOptionalField("audioUrl", e.target.value)}
-        />
-      </label>
 
       <hr />
 

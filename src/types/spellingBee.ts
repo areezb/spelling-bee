@@ -2,9 +2,16 @@ export interface Definition {
   definition: string;
 }
 
+export interface Pronunciation {
+  pronunciation: string;
+  audioFile?: string;
+  audioUrl?: string;
+}
+
 export interface Meaning {
   partOfSpeech: string;
   definitions: Definition[];
+  pronunciations: Pronunciation[];
 }
 
 export interface CachedWord {
