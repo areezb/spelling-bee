@@ -36,19 +36,21 @@ export default function CurrentWordPanel({
           </h2>
 
           {pronunciations.length > 0 && (
-            <>
+            <div className="pronunciation-section">
               <h3>Pronunciations</h3>
 
               {pronunciations.map((pronunciation, index) => (
-                <div key={index} className="audio-player">
-                  <span>{pronunciation.pronunciation}</span>
+                <div key={index} className="pronunciation-row">
+                  <span className="pronunciation-text">
+                    {pronunciation.pronunciation}
+                  </span>
 
                   {pronunciation.playbackAudio && (
                     <audio controls src={pronunciation.playbackAudio} />
                   )}
                 </div>
               ))}
-            </>
+            </div>
           )}
 
           {currentWord.meanings.map((meaning) => (
