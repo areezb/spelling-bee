@@ -43,8 +43,8 @@ export default function CurrentWordPanel({
                 <div key={index} className="audio-player">
                   <span>{pronunciation.pronunciation}</span>
 
-                  {pronunciation.audioUrl && (
-                    <audio controls src={pronunciation.audioUrl} />
+                  {pronunciation.playbackAudio && (
+                    <audio controls src={pronunciation.playbackAudio} />
                   )}
                 </div>
               ))}

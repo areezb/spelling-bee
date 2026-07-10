@@ -48,20 +48,29 @@ export default function RunnerPage() {
     const loadedWords: CompetitionWord[] = [];
 
     for (const cachedWord of Object.values(packageData.words)) {
-      let audioUrl = cachedWord.audioUrl;
+      for (const meaning of cachedWord.meanings) {
+        for (const pronunciation of meaning.pronunciations) {
+          let playbackAudio: string | undefined;
 
-      if (!audioUrl && cachedWord.audioFile) {
-        const audioFile = zip.file(`audio/${cachedWord.audioFile}`);
+          if (pronunciation.audioFile) {
+            const audioFile = zip.file(`audio/${pronunciation.audioFile}`);
 
-        if (audioFile) {
-          const blob = await audioFile.async("blob");
-          audioUrl = URL.createObjectURL(blob);
+            if (audioFile) {
+              const blob = await audioFile.async("blob");
+              playbackAudio = URL.createObjectURL(blob);
+            }
+          }
+
+          if (!playbackAudio && pronunciation.audioUrl) {
+            playbackAudio = pronunciation.audioUrl;
+          }
+
+          pronunciation.playbackAudio = playbackAudio;
         }
       }
 
       loadedWords.push({
         ...cachedWord,
-        audioUrl,
         used: false,
         active: false,
       });

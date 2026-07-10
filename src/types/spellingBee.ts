@@ -6,6 +6,7 @@ export interface Pronunciation {
   pronunciation: string;
   audioFile?: string;
   audioUrl?: string;
+  playbackAudio?: string;
 }
 
 export interface Meaning {
