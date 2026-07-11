@@ -79,6 +79,42 @@ export default function MeaningEditor({
     });
   }
 
+  function moveDefinitionUp(index: number) {
+    if (index === 0) {
+      return;
+    }
+
+    const definitions = [...meaning.definitions];
+
+    [definitions[index - 1], definitions[index]] = [
+      definitions[index],
+      definitions[index - 1],
+    ];
+
+    onChange({
+      ...meaning,
+      definitions,
+    });
+  }
+
+  function moveDefinitionDown(index: number) {
+    if (index === meaning.definitions.length - 1) {
+      return;
+    }
+
+    const definitions = [...meaning.definitions];
+
+    [definitions[index], definitions[index + 1]] = [
+      definitions[index + 1],
+      definitions[index],
+    ];
+
+    onChange({
+      ...meaning,
+      definitions,
+    });
+  }
+
   return (
     <div className="meaning-editor">
       <div className="meaning-header">
@@ -160,6 +196,22 @@ export default function MeaningEditor({
 
       {meaning.definitions.map((definition, index) => (
         <div key={index} className="definition-row">
+          <div className="definition-buttons">
+            <button
+              onClick={() => moveDefinitionUp(index)}
+              disabled={index === 0}
+            >
+              ▲
+            </button>
+
+            <button
+              onClick={() => moveDefinitionDown(index)}
+              disabled={index === meaning.definitions.length - 1}
+            >
+              ▼
+            </button>
+          </div>
+
           <textarea
             value={definition.definition}
             onChange={(event) => updateDefinition(index, event.target.value)}
