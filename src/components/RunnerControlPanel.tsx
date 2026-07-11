@@ -50,7 +50,7 @@ export default function ControlPanel({
       <section>
         <h3>Package</h3>
 
-        <button onClick={handleUploadClick}>Load Package</button>
+        <button onClick={handleUploadClick}>Load Package (.zip)</button>
 
         <input
           ref={fileInputRef}

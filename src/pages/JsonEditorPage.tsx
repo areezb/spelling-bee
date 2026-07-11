@@ -1,6 +1,7 @@
 import "./JsonEditorPage.css";
 
 import { useEffect, useRef, useState } from "react";
+import { exportDocx } from "../utils/exportWordDoc.js";
 
 import JSZip from "jszip";
 
@@ -38,6 +39,8 @@ export default function JsonEditorPage() {
 
   const currentWord =
     selectedWord == null ? null : (words[selectedWord] ?? null);
+
+  const [firstDefinitionOnly, setFirstDefinitionOnly] = useState(true);
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
@@ -131,6 +134,10 @@ export default function JsonEditorPage() {
     setDirty(false);
   }
 
+  async function handleDownloadDocx() {
+    await exportDocx(words, firstDefinitionOnly);
+  }
+
   function handleWordChange(originalWord: string, updatedWord: CachedWord) {
     setWords((previous) => {
       if (originalWord !== updatedWord.word && previous[updatedWord.word]) {
@@ -216,8 +223,11 @@ export default function JsonEditorPage() {
 
         <EditorControlPanel
           canDownload={packageZip !== null}
+          firstDefinitionOnly={firstDefinitionOnly}
           onLoad={handleLoadClick}
           onDownload={handleDownload}
+          onDownloadDocx={handleDownloadDocx}
+          onFirstDefinitionOnlyChange={setFirstDefinitionOnly}
         />
 
         <JsonWordEditor
