@@ -24,7 +24,7 @@ function uniquePronunciations(word: CachedWord): Pronunciation[] {
 
   for (const meaning of word.meanings) {
     for (const pronunciation of meaning.pronunciations) {
-      if (!pronunciation.audioUrl) {
+      if (!pronunciation.audioFile && !pronunciation.audioUrl) {
         continue;
       }
 
@@ -98,10 +98,6 @@ function formatAudio(word: CachedWord): Paragraph {
   let first = true;
 
   for (const pronunciation of uniquePronunciations(word)) {
-    if (!pronunciation.audioUrl) {
-      continue;
-    }
-
     if (!first) {
       children.push(new TextRun({ text: "", break: 1 }));
     }
@@ -116,7 +112,7 @@ function formatAudio(word: CachedWord): Paragraph {
             style: "Hyperlink",
           }),
         ],
-        link: pronunciation.audioUrl,
+        link: pronunciation.audioUrl!,
       }),
     );
   }
