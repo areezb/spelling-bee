@@ -8,7 +8,11 @@ import EditorControlPanel from "../components/JsonEditorControls.js";
 import JsonWordEditor from "../components/JsonWordEditor.js";
 import JsonWordList from "../components/JsonWordList.js";
 
-import type { CachedWord, CompetitionPackage } from "../types/spellingBee.js";
+import type {
+  CachedWord,
+  CompetitionPackage,
+  CompetitionSettings,
+} from "../types/spellingBee.js";
 import Navbar from "../components/Navbar.tsx";
 
 export default function JsonEditorPage() {
@@ -19,6 +23,16 @@ export default function JsonEditorPage() {
   const [words, setWords] = useState<Record<string, CachedWord>>({});
 
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
+
+  function defaultCompetitionSettings(): CompetitionSettings {
+    return {
+      showPronunciationsWithoutAudio: false,
+    };
+  }
+
+  const [settings, setSettings] = useState<CompetitionSettings>(
+    defaultCompetitionSettings(),
+  );
 
   const [dirty, setDirty] = useState(false);
 
@@ -73,6 +87,8 @@ export default function JsonEditorPage() {
       setSelectedWord(firstWord ?? null);
 
       setDirty(false);
+
+      setSettings(loadedPackage.settings ?? defaultCompetitionSettings());
     } catch {
       alert("Invalid competition package.");
     }
@@ -89,6 +105,7 @@ export default function JsonEditorPage() {
       "words.json",
       JSON.stringify(
         {
+          settings,
           words,
         },
         null,
@@ -178,6 +195,13 @@ export default function JsonEditorPage() {
     setDirty(true);
   }
 
+  function handleSettingsChange(changes: Partial<CompetitionSettings>) {
+    setSettings((prev) => ({
+      ...prev,
+      ...changes,
+    }));
+  }
+
   return (
     <>
       <Navbar />
@@ -204,9 +228,11 @@ export default function JsonEditorPage() {
 
         <JsonWordList
           words={words}
+          settings={settings}
           selectedWord={selectedWord}
           onSelectWord={setSelectedWord}
           onAddWord={handleAddWord}
+          handleSettingsChange={handleSettingsChange}
         />
       </div>
     </>

@@ -79,6 +79,9 @@ export async function buildCompetitionPackage(
 
   const competitionPackage: CompetitionPackage = {
     words: cache,
+    settings: {
+      showPronunciationsWithoutAudio: false,
+    }
   };
 
   zip.file("words.json", JSON.stringify(competitionPackage, null, 2));

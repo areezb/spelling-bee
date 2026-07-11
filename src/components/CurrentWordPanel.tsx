@@ -1,13 +1,15 @@
 import "./CurrentWordPanel.css";
 
-import type { CompetitionWord } from "../types/spellingBee.js";
+import type { CompetitionSettings, CompetitionWord } from "../types/spellingBee.js";
 
 interface CurrentWordPanelProps {
   currentWord: CompetitionWord | null;
+  settings: CompetitionSettings;
 }
 
 export default function CurrentWordPanel({
   currentWord,
+  settings,
 }: CurrentWordPanelProps) {
   if (!currentWord) {
     return (
@@ -20,6 +22,7 @@ export default function CurrentWordPanel({
     new Map(
       currentWord.meanings
         .flatMap((m) => m.pronunciations)
+        .filter((p) => settings.showPronunciationsWithoutAudio || p.playbackAudio)
         .map((p) => [p.convertedPronunciation, p]),
     ).values(),
   );

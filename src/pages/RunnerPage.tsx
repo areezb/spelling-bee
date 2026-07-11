@@ -11,6 +11,7 @@ import WordList from "../components/RunnerWordList.tsx";
 import type {
   CompetitionPackage,
   CompetitionWord,
+  CompetitionSettings,
 } from "../types/spellingBee.js";
 import Navbar from "../components/Navbar.tsx";
 
@@ -20,6 +21,14 @@ export default function RunnerPage() {
   const currentWord = words.find((word) => word.active) ?? null;
 
   const canRandomize = words.length > 0 && currentWord === null;
+
+  function defaultCompetitionSettings(): CompetitionSettings {
+    return {
+      showPronunciationsWithoutAudio: false,
+    };
+  }
+
+  const [settings, setSettings] = useState<CompetitionSettings>(defaultCompetitionSettings());
 
   // -----------------------------
   // COMPETITION PACKAGE
@@ -48,6 +57,8 @@ export default function RunnerPage() {
     const packageData: CompetitionPackage = JSON.parse(
       await jsonFile.async("string"),
     );
+
+    setSettings(packageData.settings ?? defaultCompetitionSettings());
 
     const loadedWords: CompetitionWord[] = [];
 
@@ -140,7 +151,7 @@ export default function RunnerPage() {
           onEndRound={handleEndRound}
         />
 
-        <CurrentWordPanel currentWord={currentWord} />
+        <CurrentWordPanel currentWord={currentWord} settings={settings} />
 
         <WordList words={words} />
       </div>
