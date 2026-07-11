@@ -33,12 +33,12 @@
 }
 
 .editor-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .editor-checkbox input {
-    margin: 0;
+  margin: 0;
 }

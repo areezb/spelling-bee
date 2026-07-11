@@ -13,7 +13,6 @@ import type {
   CompetitionWord,
   CompetitionSettings,
 } from "../types/spellingBee.js";
-import Navbar from "../components/Navbar.tsx";
 
 export default function RunnerPage() {
   const [words, setWords] = useState<CompetitionWord[]>([]);
@@ -139,8 +138,6 @@ export default function RunnerPage() {
   }
 
   return (
-    <>
-      <Navbar />
       <div className="runner-page">
         <ControlPanel
           randomWordEnabled={canRandomize}
@@ -155,6 +152,5 @@ export default function RunnerPage() {
 
         <WordList words={words} />
       </div>
-    </>
   );
 }

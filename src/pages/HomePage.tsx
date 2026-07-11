@@ -68,7 +68,7 @@ export default function HomePage() {
           <p>Review and edit an existing competition package.</p>
 
           <ul>
-            <li>Edit definitions and examples.</li>
+            <li>Edit definitions, examples, and pronunciations.</li>
             <li>Add and remove words.</li>
             <li>Save the updated package.</li>
           </ul>
@@ -105,7 +105,7 @@ Package Builder
     ↓
 competition.zip
     ↓
-Package Editor (optional)
+Package Editor
     ↓
 competition.zip
     ↓

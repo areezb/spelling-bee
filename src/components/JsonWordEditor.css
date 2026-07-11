@@ -2,6 +2,12 @@
   flex: 1;
   overflow-y: auto;
 
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  padding: 1rem;
+  box-sizing: border-box;
+
   padding: 1.5rem;
 }
 
