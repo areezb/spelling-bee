@@ -45,7 +45,7 @@ export default function EditorControlPanel({
               onFirstDefinitionOnlyChange(event.target.checked)
             }
           />
-          First definition only
+          First definition per part of speech only
         </label>
       </section>
     </div>
