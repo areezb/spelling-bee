@@ -138,55 +138,62 @@ export default function MeaningEditor({
       <h4>Pronunciations</h4>
 
       {meaning.pronunciations.map((pronunciation, index) => (
-        <div key={index} className="pronunciation-row">
-          <input
-            type="text"
-            placeholder="MW Pronunciation"
-            value={pronunciation.mwPronunciation}
-            readOnly
-            className="readonly-input"
-          />
+        <div key={index} className="pronunciation-card">
+          <div className="pronunciation-grid">
+            <input
+              type="text"
+              placeholder="MW Pronunciation"
+              value={pronunciation.mwPronunciation}
+              readOnly
+              className="readonly-input"
+            />
 
-          <input
-            type="text"
-            placeholder="Converted Pronunciation"
-            value={pronunciation.convertedPronunciation}
-            onChange={(event) =>
-              updatePronunciation(index, {
-                convertedPronunciation: event.target.value,
-              })
-            }
-          />
+            <input
+              type="text"
+              placeholder="Converted Pronunciation"
+              value={pronunciation.convertedPronunciation}
+              onChange={(event) =>
+                updatePronunciation(index, {
+                  convertedPronunciation: event.target.value,
+                })
+              }
+            />
 
-          <input
-            type="text"
-            placeholder="Audio File"
-            value={pronunciation.audioFile ?? ""}
-            onChange={(event) =>
-              updatePronunciation(index, {
-                audioFile:
-                  event.target.value.trim() === ""
-                    ? undefined
-                    : event.target.value,
-              })
-            }
-          />
+            <input
+              type="text"
+              placeholder="Audio File"
+              value={pronunciation.audioFile ?? ""}
+              onChange={(event) =>
+                updatePronunciation(index, {
+                  audioFile:
+                    event.target.value.trim() === ""
+                      ? undefined
+                      : event.target.value,
+                })
+              }
+            />
 
-          <input
-            type="text"
-            placeholder="Audio URL"
-            value={pronunciation.audioUrl ?? ""}
-            onChange={(event) =>
-              updatePronunciation(index, {
-                audioUrl:
-                  event.target.value.trim() === ""
-                    ? undefined
-                    : event.target.value,
-              })
-            }
-          />
+            <input
+              type="text"
+              placeholder="Audio URL"
+              value={pronunciation.audioUrl ?? ""}
+              onChange={(event) =>
+                updatePronunciation(index, {
+                  audioUrl:
+                    event.target.value.trim() === ""
+                      ? undefined
+                      : event.target.value,
+                })
+              }
+            />
+          </div>
 
-          <button onClick={() => removePronunciation(index)}>×</button>
+          <button
+            className="pronunciation-delete"
+            onClick={() => removePronunciation(index)}
+          >
+            ×
+          </button>
         </div>
       ))}
 

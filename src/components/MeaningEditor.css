@@ -53,3 +53,36 @@
 .definition-row input {
   flex: 1;
 }
+
+.pronunciation-card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  background: #fafafa;
+}
+
+.pronunciation-grid {
+  flex: 1;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.pronunciation-grid input {
+  margin: 0;
+}
+
+.pronunciation-delete {
+  width: 2rem;
+  height: 2rem;
+
+  flex-shrink: 0;
+}
