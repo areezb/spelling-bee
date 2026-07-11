@@ -4,6 +4,8 @@ import type {
   Pronunciation,
 } from "../../src/types/spellingBee.js";
 
+import { convertMwPronunciation } from "../../src/utils/pronunciation.js";
+
 const BASE_URL =
   "https://www.dictionaryapi.com/api/v3/references/collegiate/json";
 
@@ -67,7 +69,7 @@ function buildPronunciations(
     if (mw.startsWith("-") && pronunciations.length > 0) {
       const previous = pronunciations[pronunciations.length - 1];
 
-      previous.pronunciation += mw;
+      previous.mwPronunciation += mw;
 
       // If the continuation happens to contain audio, keep it.
       if (pr.sound?.audio) {
@@ -79,7 +81,8 @@ function buildPronunciations(
     }
 
     pronunciations.push({
-      pronunciation: mw,
+      mwPronunciation: mw,
+      convertedPronunciation: convertMwPronunciation(mw),
       audioFile: pr.sound?.audio ? `${pr.sound.audio}.mp3` : undefined,
       audioUrl: pr.sound?.audio ? getAudioUrl(pr.sound.audio) : undefined,
     });

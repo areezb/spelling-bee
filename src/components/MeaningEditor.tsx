@@ -46,7 +46,7 @@ export default function MeaningEditor({
     index: number,
     changes: Partial<Meaning["pronunciations"][number]>,
   ) {
-    const pronunciations = [...(meaning.pronunciations)];
+    const pronunciations = [...meaning.pronunciations];
 
     pronunciations[index] = {
       ...pronunciations[index],
@@ -63,9 +63,10 @@ export default function MeaningEditor({
     onChange({
       ...meaning,
       pronunciations: [
-        ...(meaning.pronunciations),
+        ...meaning.pronunciations,
         {
-          pronunciation: "",
+          mwPronunciation: "",
+          convertedPronunciation: "",
         },
       ],
     });
@@ -74,9 +75,7 @@ export default function MeaningEditor({
   function removePronunciation(index: number) {
     onChange({
       ...meaning,
-      pronunciations: (meaning.pronunciations).filter(
-        (_, i) => i !== index,
-      ),
+      pronunciations: meaning.pronunciations.filter((_, i) => i !== index),
     });
   }
 
@@ -102,15 +101,23 @@ export default function MeaningEditor({
 
       <h4>Pronunciations</h4>
 
-      {(meaning.pronunciations).map((pronunciation, index) => (
+      {meaning.pronunciations.map((pronunciation, index) => (
         <div key={index} className="pronunciation-row">
           <input
             type="text"
-            placeholder="Pronunciation"
-            value={pronunciation.pronunciation}
+            placeholder="MW Pronunciation"
+            value={pronunciation.mwPronunciation}
+            readOnly
+            className="readonly-input"
+          />
+
+          <input
+            type="text"
+            placeholder="Converted Pronunciation"
+            value={pronunciation.convertedPronunciation}
             onChange={(event) =>
               updatePronunciation(index, {
-                pronunciation: event.target.value,
+                convertedPronunciation: event.target.value,
               })
             }
           />

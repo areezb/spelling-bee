@@ -20,7 +20,7 @@ export default function CurrentWordPanel({
     new Map(
       currentWord.meanings
         .flatMap((m) => m.pronunciations)
-        .map((p) => [p.pronunciation, p]),
+        .map((p) => [p.convertedPronunciation, p]),
     ).values(),
   );
   return (
@@ -42,7 +42,7 @@ export default function CurrentWordPanel({
               {pronunciations.map((pronunciation, index) => (
                 <div key={index} className="pronunciation-row">
                   <span className="pronunciation-text">
-                    {pronunciation.pronunciation}
+                    {pronunciation.convertedPronunciation}
                   </span>
 
                   {pronunciation.playbackAudio && (

@@ -3,7 +3,8 @@ export interface Definition {
 }
 
 export interface Pronunciation {
-  pronunciation: string;
+  mwPronunciation: string;
+  convertedPronunciation: string;
   audioFile?: string;
   audioUrl?: string;
   playbackAudio?: string;
