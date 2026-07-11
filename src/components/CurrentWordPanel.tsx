@@ -1,15 +1,19 @@
 import "./CurrentWordPanel.css";
 
-import type { CompetitionSettings, CompetitionWord } from "../types/spellingBee.js";
+import type {
+  CompetitionWord,
+} from "../types/spellingBee.js";
 
 interface CurrentWordPanelProps {
   currentWord: CompetitionWord | null;
-  settings: CompetitionSettings;
+  firstDefinitionOnly: boolean;
+  hidePronunciationsWithoutAudio: boolean;
 }
 
 export default function CurrentWordPanel({
   currentWord,
-  settings,
+  firstDefinitionOnly,
+  hidePronunciationsWithoutAudio,
 }: CurrentWordPanelProps) {
   if (!currentWord) {
     return (
@@ -22,7 +26,9 @@ export default function CurrentWordPanel({
     new Map(
       currentWord.meanings
         .flatMap((m) => m.pronunciations)
-        .filter((p) => settings.showPronunciationsWithoutAudio || p.playbackAudio)
+        .filter(
+          (p) => !hidePronunciationsWithoutAudio || p.playbackAudio,
+        )
         .map((p) => [p.convertedPronunciation, p]),
     ).values(),
   );
@@ -61,7 +67,10 @@ export default function CurrentWordPanel({
               <h3>{meaning.partOfSpeech}</h3>
 
               <ul>
-                {meaning.definitions.map((definition, index) => (
+                {(firstDefinitionOnly
+                  ? meaning.definitions.slice(0, 1)
+                  : meaning.definitions
+                ).map((definition, index) => (
                   <li key={index}>{definition.definition}</li>
                 ))}
               </ul>

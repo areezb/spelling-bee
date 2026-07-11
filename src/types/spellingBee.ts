@@ -31,11 +31,6 @@ export interface CompetitionWord extends CachedWord {
   active: boolean;
 }
 
-export interface CompetitionSettings {
-    showPronunciationsWithoutAudio: boolean;
-}
-
 export interface CompetitionPackage {
   words: Record<string, CachedWord>;
-  settings: CompetitionSettings;
 }

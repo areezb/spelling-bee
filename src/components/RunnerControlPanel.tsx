@@ -6,9 +6,12 @@ import type { ChangeEvent } from "react";
 interface ControlPanelProps {
   randomWordEnabled: boolean;
   currentWordActive: boolean;
+  firstDefinitionOnly: boolean;
+  hidePronunciationsWithoutAudio: boolean;
 
+  onFirstDefinitionOnlyChange(checked: boolean): void;
+  onHidePronunciationsWithoutAudioChange(checked: boolean): void;
   onUploadPackage(file: File): void;
-
   onRandomWord(): void;
   onCorrect(): void;
   onEndRound(): void;
@@ -17,9 +20,12 @@ interface ControlPanelProps {
 export default function ControlPanel({
   randomWordEnabled,
   currentWordActive,
+  firstDefinitionOnly,
+  hidePronunciationsWithoutAudio,
 
+  onFirstDefinitionOnlyChange,
+  onHidePronunciationsWithoutAudioChange,
   onUploadPackage,
-
   onRandomWord,
   onCorrect,
   onEndRound,
@@ -81,6 +87,34 @@ export default function ControlPanel({
             End Round
           </button>
         </div>
+      </section>
+      <hr />
+      <section>
+        <details>
+          <summary>Display Settings</summary>
+
+          <label className="runner-checkbox">
+            <input
+              type="checkbox"
+              checked={firstDefinitionOnly}
+              onChange={(event) =>
+                onFirstDefinitionOnlyChange(event.target.checked)
+              }
+            />
+            Display only first definition
+          </label>
+
+          <label className="runner-checkbox">
+            <input
+              type="checkbox"
+              checked={hidePronunciationsWithoutAudio}
+              onChange={(event) =>
+                onHidePronunciationsWithoutAudioChange(event.target.checked)
+              }
+            />
+            Hide pronunciations without audio
+          </label>
+        </details>
       </section>
     </div>
   );

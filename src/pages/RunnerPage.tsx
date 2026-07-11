@@ -11,7 +11,6 @@ import WordList from "../components/RunnerWordList.tsx";
 import type {
   CompetitionPackage,
   CompetitionWord,
-  CompetitionSettings,
 } from "../types/spellingBee.js";
 
 export default function RunnerPage() {
@@ -21,13 +20,9 @@ export default function RunnerPage() {
 
   const canRandomize = words.length > 0 && currentWord === null;
 
-  function defaultCompetitionSettings(): CompetitionSettings {
-    return {
-      showPronunciationsWithoutAudio: false,
-    };
-  }
+  const [firstDefinitionOnly, setFirstDefinitionOnly] = useState(true);
 
-  const [settings, setSettings] = useState<CompetitionSettings>(defaultCompetitionSettings());
+  const [hidePronunciationsWithoutAudio, setHidePronunciationsWithoutAudio] = useState(true);
 
   // -----------------------------
   // COMPETITION PACKAGE
@@ -56,8 +51,6 @@ export default function RunnerPage() {
     const packageData: CompetitionPackage = JSON.parse(
       await jsonFile.async("string"),
     );
-
-    setSettings(packageData.settings ?? defaultCompetitionSettings());
 
     const loadedWords: CompetitionWord[] = [];
 
@@ -138,19 +131,27 @@ export default function RunnerPage() {
   }
 
   return (
-      <div className="runner-page">
-        <ControlPanel
-          randomWordEnabled={canRandomize}
-          currentWordActive={currentWord !== null}
-          onUploadPackage={handleUploadPackage}
-          onRandomWord={handleRandomWord}
-          onCorrect={handleCorrect}
-          onEndRound={handleEndRound}
-        />
+    <div className="runner-page">
+      <ControlPanel
+        randomWordEnabled={canRandomize}
+        currentWordActive={currentWord !== null}
+        firstDefinitionOnly={firstDefinitionOnly}
+        hidePronunciationsWithoutAudio={hidePronunciationsWithoutAudio}
+        onFirstDefinitionOnlyChange={setFirstDefinitionOnly}
+        onHidePronunciationsWithoutAudioChange={setHidePronunciationsWithoutAudio}
+        onUploadPackage={handleUploadPackage}
+        onRandomWord={handleRandomWord}
+        onCorrect={handleCorrect}
+        onEndRound={handleEndRound}
+      />
 
-        <CurrentWordPanel currentWord={currentWord} settings={settings} />
+      <CurrentWordPanel
+        currentWord={currentWord}
+        firstDefinitionOnly={firstDefinitionOnly}
+        hidePronunciationsWithoutAudio={hidePronunciationsWithoutAudio}
+      />
 
-        <WordList words={words} />
-      </div>
+      <WordList words={words} />
+    </div>
   );
 }

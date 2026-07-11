@@ -1,14 +1,12 @@
 import "./JsonWordList.css";
 
-import type { CachedWord, CompetitionSettings } from "../types/spellingBee.js";
+import type { CachedWord } from "../types/spellingBee.js";
 
 interface JsonWordListProps {
   words: Record<string, CachedWord>;
-  settings: CompetitionSettings;
   selectedWord: string | null;
   onSelectWord(word: string): void;
   onAddWord(): void;
-  handleSettingsChange(changes: Partial<CompetitionSettings>): void;
 }
 
 function isIncomplete(word: CachedWord) {
@@ -27,11 +25,9 @@ function isIncomplete(word: CachedWord) {
 
 export default function JsonWordList({
   words,
-  settings,
   selectedWord,
   onSelectWord,
   onAddWord,
-  handleSettingsChange,
 }: JsonWordListProps) {
   const wordNames = Object.keys(words).sort();
 
@@ -70,22 +66,6 @@ export default function JsonWordList({
         ))}
       </ul>
       <button onClick={onAddWord}>Add Word</button>
-      <hr />
-
-      <h2>Settings</h2>
-
-      <label className="editor-setting">
-        <input
-          type="checkbox"
-          checked={settings.showPronunciationsWithoutAudio}
-          onChange={(event) =>
-            handleSettingsChange({
-              showPronunciationsWithoutAudio: event.target.checked,
-            })
-          }
-        />
-        Show pronunciations without audio
-      </label>
     </div>
   );
 }

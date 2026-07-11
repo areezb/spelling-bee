@@ -46,3 +46,22 @@
   width: 100%;
   margin: 0;
 }
+
+.runner-control-panel details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.runner-control-panel summary {
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+    margin-bottom: 0.5rem;
+}
+
+.runner-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
