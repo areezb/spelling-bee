@@ -70,6 +70,9 @@ function buildPronunciations(
       const previous = pronunciations[pronunciations.length - 1];
 
       previous.mwPronunciation += mw.slice(1);
+      previous.convertedPronunciation = convertMwPronunciation(
+        previous.mwPronunciation,
+      );
 
       // If the continuation happens to contain audio, keep it.
       if (pr.sound?.audio) {
