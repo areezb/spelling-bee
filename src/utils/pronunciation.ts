@@ -224,7 +224,7 @@ export function lex(input: string): Token[] {
   const normalized_input = normalizeMwPronunciation(input);
 
   for (let i = 0; i < normalized_input.length; ) {
-    const phoneme = readPhoneme(input, i);
+    const phoneme = readPhoneme(normalized_input, i);
 
     if (phoneme) {
       out.push(makePhonemeToken(phoneme.token));
@@ -242,6 +242,30 @@ export function lex(input: string): Token[] {
 
     out.push(makeLiteralToken(normalized_input[i]));
     i++;
+  }
+
+  return out;
+}
+
+function simplify(tokens: Token[]): Token[] {
+  const out: Token[] = [];
+
+  for (let i = 0; i < tokens.length; i++) {
+    // Remove () that contain only secondary stress.
+    if (
+      i + 2 < tokens.length &&
+      tokens[i].type === "marker" &&
+      tokens[i].value === Marker.OPTIONAL_START &&
+      tokens[i + 1].type === "marker" &&
+      tokens[i + 1].value === Marker.SECONDARY_STRESS &&
+      tokens[i + 2].type === "marker" &&
+      tokens[i + 2].value === Marker.OPTIONAL_END
+    ) {
+      i += 2;
+      continue;
+    }
+
+    out.push(tokens[i]);
   }
 
   return out;
@@ -357,5 +381,5 @@ export function render(tokens: Token[]): string {
 }
 
 export function convertMwPronunciation(input: string): string {
-  return render(lex(input));
+  return render(simplify(lex(input)));
 }
