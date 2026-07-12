@@ -208,10 +208,22 @@ function readMarker(input: string, index: number): MarkerRule | null {
   return null;
 }
 
+function normalizeMwPronunciation(input: string): string {
+    return input
+        .replaceAll("ᵊl", "əl")
+        .replaceAll("ᵊm", "əm")
+        .replaceAll("ᵊn", "ən")
+        .replaceAll("ᵊŋ", "əŋ")
+        .replaceAll("ᵊ", "ə")
+        .replaceAll("ʸ", "");
+}
+
 export function lex(input: string): Token[] {
   const out: Token[] = [];
 
-  for (let i = 0; i < input.length; ) {
+  const normalized_input = normalizeMwPronunciation(input);
+
+  for (let i = 0; i < normalized_input.length; ) {
     const phoneme = readPhoneme(input, i);
 
     if (phoneme) {
@@ -220,7 +232,7 @@ export function lex(input: string): Token[] {
       continue;
     }
 
-    const marker = readMarker(input, i);
+    const marker = readMarker(normalized_input, i);
 
     if (marker) {
       out.push(makeMarkerToken(marker.token));
@@ -228,7 +240,7 @@ export function lex(input: string): Token[] {
       continue;
     }
 
-    out.push(makeLiteralToken(input[i]));
+    out.push(makeLiteralToken(normalized_input[i]));
     i++;
   }
 
