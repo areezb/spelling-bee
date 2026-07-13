@@ -58,7 +58,7 @@ export default function DevPage() {
           "Package generated.\n\n" +
             "No information was found for the following words:\n\n" +
             failedWords.join("\n") +
-            "\n\nThese words were added as blank entries. Use the JSON Editor to complete them manually.",
+            "\n\nThese words were added as blank entries. Use the Package Builder to complete them manually.",
         );
       } else {
         alert("Package successfully generated.");
