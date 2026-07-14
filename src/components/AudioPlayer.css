@@ -1,0 +1,9 @@
+.audio-player {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.audio-player select {
+  flex-shrink: 0;
+}

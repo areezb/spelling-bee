@@ -3,6 +3,7 @@ import "./CurrentWordPanel.css";
 import type {
   CompetitionWord,
 } from "../types/spellingBee.js";
+import AudioPlayer from "./AudioPlayer.tsx";
 
 interface CurrentWordPanelProps {
   currentWord: CompetitionWord | null;
@@ -55,7 +56,7 @@ export default function CurrentWordPanel({
                   </span>
 
                   {pronunciation.playbackAudio && (
-                    <audio controls src={pronunciation.playbackAudio} />
+                    <AudioPlayer src={pronunciation.playbackAudio} />
                   )}
                 </div>
               ))}
