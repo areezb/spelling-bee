@@ -66,7 +66,7 @@ function buildPronunciations(
     const mw = pr.mw ?? "";
 
     // Continuation of the previous pronunciation
-    if (mw.startsWith("-") && pronunciations.length > 0) {
+    if (mw.startsWith("-") && pronunciations.length > 0 && pronunciations[pronunciations.length - 1].mwPronunciation.endsWith("-")) {
       const previous = pronunciations[pronunciations.length - 1];
 
       previous.mwPronunciation += mw.slice(1);
