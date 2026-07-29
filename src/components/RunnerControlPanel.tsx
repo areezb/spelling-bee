@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 
 interface ControlPanelProps {
   randomWordEnabled: boolean;
-  currentWordActive: boolean;
+  currentWordUsed: boolean;
   firstDefinitionOnly: boolean;
   hidePronunciationsWithoutAudio: boolean;
 
@@ -19,7 +19,7 @@ interface ControlPanelProps {
 
 export default function ControlPanel({
   randomWordEnabled,
-  currentWordActive,
+  currentWordUsed,
   firstDefinitionOnly,
   hidePronunciationsWithoutAudio,
 
@@ -79,11 +79,11 @@ export default function ControlPanel({
         <div style={{ height: "5rem" }} />
 
         <div className="runner-button-row">
-          <button onClick={onCorrect} disabled={!currentWordActive}>
+          <button onClick={onCorrect} disabled={currentWordUsed}>
             Correct
           </button>
 
-          <button onClick={onEndRound} disabled={!currentWordActive}>
+          <button onClick={onEndRound} disabled={currentWordUsed}>
             End Round
           </button>
         </div>

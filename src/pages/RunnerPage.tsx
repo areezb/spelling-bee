@@ -18,7 +18,7 @@ export default function RunnerPage() {
 
   const currentWord = words.find((word) => word.active) ?? null;
 
-  const canRandomize = words.length > 0 && currentWord === null;
+  const canRandomize = words.length > 0 && (currentWord === null || currentWord.used === true);
 
   const [firstDefinitionOnly, setFirstDefinitionOnly] = useState(true);
 
@@ -114,7 +114,6 @@ export default function RunnerPage() {
         word.active
           ? {
               ...word,
-              active: false,
               used: markUsed ? true : word.used,
             }
           : word,
@@ -134,7 +133,7 @@ export default function RunnerPage() {
     <div className="runner-page">
       <ControlPanel
         randomWordEnabled={canRandomize}
-        currentWordActive={currentWord !== null}
+        currentWordUsed={currentWord?.used ?? true}
         firstDefinitionOnly={firstDefinitionOnly}
         hidePronunciationsWithoutAudio={hidePronunciationsWithoutAudio}
         onFirstDefinitionOnlyChange={setFirstDefinitionOnly}
