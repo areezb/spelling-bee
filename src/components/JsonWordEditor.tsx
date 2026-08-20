@@ -95,6 +95,15 @@ export default function JsonWordEditor({
         />
       </label>
 
+      <label>
+        Is homophone?
+        <input
+          type="checkbox"
+          checked={currentWord.homophone ?? false}
+          onChange={(e) => updateField("homophone", e.target.checked)}
+        />
+      </label>
+
       <label>Alternate Spellings</label>
 
       {(currentWord.alternateSpellings ?? []).map((spelling, index) => (

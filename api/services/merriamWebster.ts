@@ -21,7 +21,7 @@ interface MerriamWebsterEntry {
   meta: {
     id: string;
   };
-
+  hom?: number;
   hwi?: {
     hw?: string;
 
@@ -166,6 +166,7 @@ export async function fetchWordFromMerriam(
 
     meanings,
     alternateSpellings,
+    homophone: "hom" in firstEntry,
   };
 }
 

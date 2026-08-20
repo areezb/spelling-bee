@@ -1,8 +1,6 @@
 import "./CurrentWordPanel.css";
 
-import type {
-  CompetitionWord,
-} from "../types/spellingBee.js";
+import type { CompetitionWord } from "../types/spellingBee.js";
 import AudioPlayer from "./AudioPlayer.tsx";
 
 interface CurrentWordPanelProps {
@@ -27,9 +25,7 @@ export default function CurrentWordPanel({
     new Map(
       currentWord.meanings
         .flatMap((m) => m.pronunciations)
-        .filter(
-          (p) => !hidePronunciationsWithoutAudio || p.playbackAudio,
-        )
+        .filter((p) => !hidePronunciationsWithoutAudio || p.playbackAudio)
         .map((p) => [p.convertedPronunciation, p]),
     ).values(),
   );
@@ -61,6 +57,17 @@ export default function CurrentWordPanel({
                 </div>
               ))}
             </div>
+          )}
+
+          {currentWord.homophone && (
+            <p>
+              <strong>
+                <em>
+                  This word is a homophone. You must give its definition 
+                  immediately after pronunciation.
+                </em>
+              </strong>
+            </p>
           )}
 
           {currentWord.meanings.map((meaning) => (

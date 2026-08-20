@@ -24,6 +24,8 @@ export interface CachedWord {
   example?: string;
 
   alternateSpellings?: string[];
+
+  homophone?: boolean;
 }
 
 export interface CompetitionWord extends CachedWord {
