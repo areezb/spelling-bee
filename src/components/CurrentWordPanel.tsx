@@ -63,15 +63,15 @@ export default function CurrentWordPanel({
             <p>
               <strong>
                 <em>
-                  This word is a homophone. You must give its definition 
+                  This word is a homophone. You must give its definition
                   immediately after pronunciation.
                 </em>
               </strong>
             </p>
           )}
 
-          {currentWord.meanings.map((meaning) => (
-            <div key={meaning.partOfSpeech}>
+          {currentWord.meanings.map((meaning, index) => (
+            <div key={`${meaning.partOfSpeech}-${index}`}>
               <h3>{meaning.partOfSpeech}</h3>
 
               <ul>
